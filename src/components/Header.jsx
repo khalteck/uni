@@ -244,9 +244,14 @@ const Header = () => {
                 </Link>
               </li>
               <li className="my-4">
-                <Link to="/register" onClick={hideDropdown}>
+                <div
+                  onClick={() => {
+                    hideDropdown();
+                    toggleRegMod();
+                  }}
+                >
                   <div className="w-full">Register</div>
-                </Link>
+                </div>
               </li>
 
               <li className="my-4">

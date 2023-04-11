@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import { useAppContext } from "../contexts/AppContext";
+import ScrollToTop from "../ScrollToTop";
 
 const StaffReg = () => {
   const {
@@ -68,7 +69,7 @@ const StaffReg = () => {
       {regMod && (
         <div className="w-full h-full fixed top-0 left-0 bg-[#135874]/90 p-4 flex justify-center items-center z-40">
           <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fe7250] p-5 scale">
-            <h2 className="font-bold text-[1.5rem]">Login</h2>
+            <h2 className="font-bold text-[1.5rem]">Register</h2>
             <button
               onClick={studentReg}
               className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-[#fe7250] text-[#fe7250] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
@@ -163,7 +164,7 @@ const StaffReg = () => {
               </button>
               <span className="text-sm ml-2 cursor-pointer">
                 Already registered?{" "}
-                <Link to="/login" className="text-[#fe7250]">
+                <Link to="/login-staff" className="text-[#fe7250]">
                   Login
                 </Link>
               </span>
@@ -171,6 +172,7 @@ const StaffReg = () => {
           </div>
         </div>{" "}
       </div>
+      <ScrollToTop />
     </>
   );
 };

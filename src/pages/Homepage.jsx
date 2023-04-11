@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Loader from "../components/Loader";
 import { useAppContext } from "../contexts/AppContext";
+import ScrollToTop from "../ScrollToTop";
 
 const Homepage = () => {
   const {
@@ -73,7 +74,7 @@ const Homepage = () => {
       {regMod && (
         <div className="w-full h-full fixed top-0 left-0 bg-[#135874]/90 p-4 flex justify-center items-center z-40">
           <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fe7250] p-5 scale">
-            <h2 className="font-bold text-[1.5rem]">Login</h2>
+            <h2 className="font-bold text-[1.5rem]">Register</h2>
             <button
               onClick={studentReg}
               className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-[#fe7250] text-[#fe7250] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
@@ -109,11 +110,12 @@ const Homepage = () => {
               </p>
             </div>
             <div className="flex gap-3">
-              <Link to="/register">
-                <button className="text-sm bg-[#fe7250] px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-[#fe7250] border-2 tracking-widest rounded-md transition-all duration-300">
-                  Register
-                </button>
-              </Link>
+              <button
+                onClick={toggleRegMod}
+                className="text-sm bg-[#fe7250] px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-[#fe7250] border-2 tracking-widest rounded-md transition-all duration-300"
+              >
+                Register
+              </button>
               <button
                 onClick={openContact}
                 className="text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-white hover:border-[#fe7250] border-2 rounded-md transition-all duration-300"
@@ -175,6 +177,7 @@ const Homepage = () => {
           </div>
         </div>
       </div>
+      <ScrollToTop />
     </>
   );
 };
