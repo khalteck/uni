@@ -23,8 +23,8 @@ const Login = () => {
       {loader && <Loader />}
 
       {contactMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#135874]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fe7250] p-5 scale">
+        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
+          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
             <h2 className="font-bold text-[1.5rem]">Contact Us</h2>
             <h3 className="font-medium text-[1.1rem] sm:text-[1.3rem] text-center">
               Email: uni@email.com
@@ -34,7 +34,7 @@ const Login = () => {
             </h3>
             <button
               onClick={closeContact}
-              className="text-sm bg-[#fe7250] px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-[#fe7250] text-white border-2 tracking-widest rounded-md transition-all duration-300"
+              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
             >
               Close
             </button>
@@ -42,24 +42,24 @@ const Login = () => {
         </div>
       )}
       {loginMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#135874]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fe7250] p-5 scale">
+        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
+          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
             <h2 className="font-bold text-[1.5rem]">Login</h2>
             <button
               onClick={studentLogin}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-[#fe7250] text-[#fe7250] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
+              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
             >
               Student login
             </button>
             <button
               onClick={staffLogin}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-[#fe7250] text-[#fe7250] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
+              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
             >
               Staff login
             </button>
             <button
               onClick={toggleLoginMod}
-              className="text-sm bg-[#fe7250] px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-[#fe7250] text-white border-2 tracking-widest rounded-md transition-all duration-300"
+              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
             >
               Close
             </button>
@@ -67,24 +67,24 @@ const Login = () => {
         </div>
       )}
       {regMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#135874]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fe7250] p-5 scale">
+        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
+          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
             <h2 className="font-bold text-[1.5rem]">Register</h2>
             <button
               onClick={studentReg}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-[#fe7250] text-[#fe7250] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
+              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
             >
               Student Registration
             </button>
             <button
               onClick={staffReg}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-[#fe7250] text-[#fe7250] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
+              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
             >
               Staff Registration
             </button>
             <button
               onClick={toggleRegMod}
-              className="text-sm bg-[#fe7250] px-10 py-3 uppercase hover:bg-[#fe7250]/30 border-[#fe7250] text-white border-2 tracking-widest rounded-md transition-all duration-300"
+              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
             >
               Close
             </button>
@@ -93,14 +93,14 @@ const Login = () => {
       )}
       <div className="pt-[80px] md:pt-0">
         <div className="h-screen flex flex-col gap-6 md:gap-0 md:flex-row">
-          <div className="flex w-full md:w-[40%] py-5 px-5 bg-gradient-to-tr from-[#135874] to-[#135874]/60 justify-start md:justify-around items-center">
+          <div className="flex w-full md:w-[40%] py-5 px-5 bg-gradient-to-tr from-[#006701] to-[#006701]/60 justify-start md:justify-around items-center">
             <div>
               <h1 className="text-white font-bold text-4xl font-sans">Uni</h1>
               <p className="text-white mt-1">
                 The foundation for achieving success
               </p>
               <Link to="/">
-                <button className="block w-32 bg-white text-[#135874] mt-4 py-2  rounded-2xl font-bold mb-2">
+                <button className="block w-32 bg-white text-[#006701] mt-4 py-2  rounded-2xl font-bold mb-2">
                   Back to home
                 </button>
               </Link>
@@ -160,13 +160,13 @@ const Login = () => {
               </div>
               <button
                 type="submit"
-                className="block w-full bg-[#fe7250] mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
+                className="block w-full bg-[#fdc901] mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
               >
                 Login
               </button>
               <span className="text-sm ml-2 cursor-pointer">
                 Not registered?{" "}
-                <Link to="/register" className="text-[#fe7250]">
+                <Link to="/register" className="text-[#fdc901]">
                   Sign up
                 </Link>
               </span>

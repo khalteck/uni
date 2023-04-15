@@ -35,10 +35,10 @@ const Header = () => {
   return (
     <header>
       <div className="w-full h-[75px] flex justify-between fixed top-0 left-0">
-        <div className="w-[30%] h-full bg-[#fe7250] flex items-center justify-center">
+        <div className="w-[30%] h-full bg-[#fdc901] flex items-center justify-center">
           Follow us
         </div>
-        <div className="w-[70%] h-full bg-[#135874] flex items-center justify-center">
+        <div className="w-[70%] h-full bg-[#006701] flex items-center justify-center">
           Contact us
         </div>
       </div>
@@ -50,7 +50,7 @@ const Header = () => {
           {/* <img alt="" src="/images/logo.png" className="w-28 h-20" /> */}
           <div className="flex items-center gap-2">
             <img alt="" src="/images/logo.png" className="w-14 h-14" />
-            <div className="font-bold text-[1.25rem] md:text-[1.75rem] text-[#135874]">
+            <div className="font-bold text-[1.25rem] md:text-[1.75rem] text-[#006701]">
               Uni
             </div>
           </div>
@@ -60,8 +60,8 @@ const Header = () => {
             <Link
               to="/"
               className={`cursor-pointer px-2 py-1 ${
-                currentPage === "/" && "font-bold text-[#fe7250]"
-              } rounded-md hover:text-[#fe7250] hover:scale-[1.2] transition-all duration-300`}
+                currentPage === "/" && "font-bold text-[#fdc901]"
+              } rounded-md hover:text-[#fdc901] hover:scale-[1.2] transition-all duration-300`}
             >
               Home
             </Link>
@@ -69,8 +69,8 @@ const Header = () => {
               onClick={toggleLoginMod}
               className={`cursor-pointer px-2 py-1 ${
                 (currentPage === "/login" || currentPage === "/login-staff") &&
-                "font-bold text-[#fe7250]"
-              } rounded-md whitespace-nowrap hover:text-[#fe7250] hover:scale-[1.2] transition-all duration-300`}
+                "font-bold text-[#fdc901]"
+              } rounded-md whitespace-nowrap hover:text-[#fdc901] hover:scale-[1.2] transition-all duration-300`}
             >
               Login
             </div>
@@ -79,20 +79,20 @@ const Header = () => {
               className={`cursor-pointer px-2 py-1 ${
                 (currentPage === "/register" ||
                   currentPage === "/register-staff") &&
-                "font-bold text-[#fe7250]"
-              } rounded-md whitespace-nowrap hover:text-[#fe7250] hover:scale-[1.2] transition-all duration-300`}
+                "font-bold text-[#fdc901]"
+              } rounded-md whitespace-nowrap hover:text-[#fdc901] hover:scale-[1.2] transition-all duration-300`}
             >
               Register
             </div>
             <div
               onClick={openContact}
               className={`cursor-pointer px-2 py-1 ${
-                currentPage === "/contact" && "font-bold text-[#fe7250]"
-              } rounded-md whitespace-nowrap hover:text-[#fe7250] hover:scale-[1.2] transition-all duration-300`}
+                currentPage === "/contact" && "font-bold text-[#fdc901]"
+              } rounded-md whitespace-nowrap hover:text-[#fdc901] hover:scale-[1.2] transition-all duration-300`}
             >
               Contact
             </div>
-            <div className="w-fit h-full px-5 bg-[#fe7250] flex items-center justify-center font-bold text-white">
+            <div className="w-fit h-full px-5 bg-[#fdc901] flex items-center justify-center font-bold text-white">
               ADMISSION OPEN
             </div>
             {/* <div
@@ -226,7 +226,7 @@ const Header = () => {
               onClick={hideDropdown}
               className="w-[35%] h-full float-left bg-transparent"
             ></div> */}
-            <ul className="slide float-right w-full h-fit bg-[#135874] px-[30px] text-[1.3rem] text-white pt-[100px] pb-10 uppercase">
+            <ul className="slide float-right w-full h-fit bg-[#006701] px-[30px] text-[1.3rem] text-white pt-[100px] pb-10 uppercase">
               <li className="my-4">
                 <Link to="/" onClick={hideDropdown}>
                   <div className="w-full">Home</div>
