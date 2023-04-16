@@ -32,7 +32,7 @@ const Homepage = () => {
           <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
             <h2 className="font-bold text-[1.5rem]">Contact Us</h2>
             <h3 className="font-medium text-[1.1rem] sm:text-[1.3rem] text-center">
-              Email: uni@email.com
+              Email: RegisPro@email.com
             </h3>
             <h3 className="font-medium text-[1.1rem] sm:text-[1.3rem] text-center">
               Call: 08112345678
@@ -97,9 +97,11 @@ const Homepage = () => {
         </div>
       )}
       <div className="w-full h-[100vh] bg-home bg-cover bg-center overflow-x-hidden">
-        <div className="overlay w-full h-[100vh] pt-[180px] md:pt-[260px] pb-8 lg:px-[15%] px-4 bg-gradient-to-b from-[#006701]/60 to-[#006701]/10 flex flex-col justify-between">
+        <div className="overlay w-full h-[100vh] pt-[180px] md:pt-[260px] pb-8 lg:px-[15%] px-4 bg-gradient-to-b from-[#006701]/40 to-[#006701]/10 flex flex-col justify-between">
           <div className="first-section-text mr-auto text-white">
-            <p className="text-[1.2rem] tracking-widest">WELCOME TO UNI</p>
+            <p className="text-[1.2rem] tracking-widest uppercase">
+              WELCOME TO RegisPro
+            </p>
             <h1 className="text-[1.7rem] font-bold uppercase md:text-[2rem] lg:text-[2.75rem]">
               education is the best <br /> key success to life!!
             </h1>

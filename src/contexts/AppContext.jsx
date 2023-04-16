@@ -1,4 +1,6 @@
+import Compressor from "compressorjs";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const AppContext = createContext();
@@ -45,6 +47,42 @@ const AppContextProvider = ({ children }) => {
     toggleRegMod();
   }
 
+  const [openSearch, setOpenSearch] = useState(false);
+  function toggleSearch() {
+    setOpenSearch((prev) => !prev);
+  }
+
+  const [submitDoc, setSubmitDoc] = useState({
+    doc_name: "",
+    document: null,
+  });
+  // console.log(submitDoc);
+
+  function handlesubmitDocChange(event) {
+    const { id, value } = event.target;
+    setSubmitError("");
+    setSubmitDoc((prev) => {
+      return {
+        ...prev,
+        [id]: value,
+      };
+    });
+  }
+
+  const handleDrop = (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    setSubmitDoc({
+      ...submitDoc,
+      document: file,
+    });
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: "*",
+    multiple: false,
+    onDrop: handleDrop,
+  });
+
   return (
     <AppContext.Provider
       value={{
@@ -61,6 +99,12 @@ const AppContextProvider = ({ children }) => {
         toggleRegMod,
         studentReg,
         staffReg,
+        openSearch,
+        toggleSearch,
+        handlesubmitDocChange,
+        submitDoc,
+        getRootProps,
+        getInputProps,
       }}
     >
       {children}
