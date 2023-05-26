@@ -1,7 +1,7 @@
 import { useAppContext } from "../contexts/AppContext";
 
 const LeftSidebar = () => {
-  const { toggleDropBoard, openDropBoard } = useAppContext();
+  const { logout } = useAppContext();
   return (
     <>
       {/* medium to large screens UI */}
@@ -30,7 +30,10 @@ const LeftSidebar = () => {
         </div>
         <div className="mt-4">
           {/* Dashboards list */}
-          <div className="flex gap-2 items-center cursor-pointer hover:bg-[#fdc901]/60 bg-[#fdc901]/30 p-2 rounded-md transition-all duration-300">
+          <div
+            onClick={logout}
+            className="flex gap-2 items-center cursor-pointer hover:bg-[#fdc901]/60 bg-[#fdc901]/30 p-2 rounded-md transition-all duration-300"
+          >
             <img
               alt="building"
               src="/images/icons8-log-out-64.png"

@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 import Loader from "./components/Loader";
 import { useAppContext } from "./contexts/AppContext";
 import Homepage from "./pages/Homepage";
+import StaffDashboard from "./pages/StaffDashboard";
 
 const StudentDashboard = lazy(() => import("./pages/StudentDashboard"));
 const Register = lazy(() => import("./pages/Register"));
@@ -17,13 +18,12 @@ function App() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/student-dashboard" element={<StudentDashboard />} />
-        {/* <Route path="/about" element={<About />} />
         <Route
-          path="/appointments"
-          element={userData?.token ? <Appointments /> : <Login />}
+          path="/student-dashboard"
+          element={userData?.student_data ? <StudentDashboard /> : <Login />}
         />
-        <Route
+        <Route path="/staff-dashboard" element={<StaffDashboard />} />
+        {/* <Route
           path="/doctor/:name"
           element={userData?.token ? <Doctor /> : <Login />}
         /> */}

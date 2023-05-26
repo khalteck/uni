@@ -6,96 +6,14 @@ import { useAppContext } from "../contexts/AppContext";
 import ScrollToTop from "../ScrollToTop";
 
 const Homepage = () => {
-  const {
-    navigate,
-    openContact,
-    closeContact,
-    contactMod,
-    loader,
-    loginMod,
-    toggleLoginMod,
-    studentLogin,
-    staffLogin,
-    regMod,
-    toggleRegMod,
-    studentReg,
-    staffReg,
-  } = useAppContext();
+  const { navigate, openContact, loader, toggleRegMod, loggedOut } =
+    useAppContext();
 
   return (
     <>
       <Header />
       {loader && <Loader />}
 
-      {contactMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
-            <h2 className="font-bold text-[1.5rem]">Contact Us</h2>
-            <h3 className="font-medium text-[1.1rem] sm:text-[1.3rem] text-center">
-              Email: RegisPro@email.com
-            </h3>
-            <h3 className="font-medium text-[1.1rem] sm:text-[1.3rem] text-center">
-              Call: 08112345678
-            </h3>
-            <button
-              onClick={closeContact}
-              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-      {loginMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
-            <h2 className="font-bold text-[1.5rem]">Login</h2>
-            <button
-              onClick={studentLogin}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Student login
-            </button>
-            <button
-              onClick={staffLogin}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Staff login
-            </button>
-            <button
-              onClick={toggleLoginMod}
-              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-      {regMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
-            <h2 className="font-bold text-[1.5rem]">Register</h2>
-            <button
-              onClick={studentReg}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Student Registration
-            </button>
-            <button
-              onClick={staffReg}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Staff Registration
-            </button>
-            <button
-              onClick={toggleRegMod}
-              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
       <div className="w-full h-[100vh] bg-home bg-cover bg-center overflow-x-hidden">
         <div className="overlay w-full h-[100vh] pt-[180px] md:pt-[260px] pb-8 lg:px-[15%] px-4 bg-gradient-to-b from-[#006701]/40 to-[#006701]/10 flex flex-col justify-between">
           <div className="first-section-text mr-auto text-white">
@@ -161,7 +79,7 @@ const Homepage = () => {
               </div>
             </div>
             <div
-              onClick={() => navigate("/register")}
+              onClick={toggleRegMod}
               className="w-1/3 min-h-[120px] px-3 py-4 hover:bg-[#006701] bg-[#006701]/90 rounded-lg md:flex gap-4 hover:scale-[1.1] cursor-pointer transition-all duration-300 hidden"
             >
               <img
@@ -180,6 +98,17 @@ const Homepage = () => {
         </div>
       </div>
       <ScrollToTop />
+
+      {loggedOut && (
+        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/40 p-4 flex justify-center items-center z-40">
+          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
+            <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">
+              Logged Out!
+            </h2>
+            {/* <p className="text-[#006701] font-medium">Redirecting...</p> */}
+          </div>
+        </div>
+      )}
     </>
   );
 };

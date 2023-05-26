@@ -1,163 +1,189 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import Loader from "../components/Loader";
 import { useAppContext } from "../contexts/AppContext";
 import ScrollToTop from "../ScrollToTop";
 
 const StaffReg = () => {
   const {
-    closeContact,
-    contactMod,
+    registerStaff,
     loader,
-    loginMod,
-    toggleLoginMod,
-    studentLogin,
-    staffLogin,
-    regMod,
-    toggleRegMod,
-    studentReg,
-    staffReg,
+    formDataStaffReg,
+    handleInputChangeStaff,
+    validationEror,
+    setValidationEror,
+    registerSuccess,
+    setRegisterSuccess,
+    handleFileChangeStaff,
   } = useAppContext();
+
+  const navigate = useNavigate();
+
+  const departmentOptions = [
+    { id: 1, name: "Computer Science" },
+    { id: 2, name: "Hospitality Management & Technology" },
+    { id: 3, name: "Accounting" },
+    { id: 4, name: "Office Technology Management" },
+    { id: 5, name: "Mass Communication" },
+    { id: 6, name: "Marketing" },
+    { id: 7, name: "Civil Engineering" },
+    { id: 8, name: "Mechanical Engineering" },
+    { id: 9, name: "Electrical Engineering" },
+    { id: 10, name: "Mechanical Engineering" },
+    { id: 11, name: "Mathematics" },
+    { id: 12, name: "Statistics" },
+    { id: 13, name: "Computer Engineering" },
+  ];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formDataStaffReg);
+
+    if (
+      formDataStaffReg?.first_name &&
+      formDataStaffReg?.last_name &&
+      formDataStaffReg?.staff_number &&
+      formDataStaffReg?.address &&
+      formDataStaffReg?.contact &&
+      formDataStaffReg?.date_of_birth &&
+      formDataStaffReg?.passport &&
+      formDataStaffReg?.department &&
+      formDataStaffReg?.email
+    ) {
+      const res = await registerStaff();
+      console.log(res);
+      setRegisterSuccess(true);
+      setTimeout(() => {
+        setRegisterSuccess(true);
+        navigate("/login-staff");
+      }, 3000);
+    } else {
+      setValidationEror(true);
+    }
+  };
+
   return (
     <>
       <Header />
       {loader && <Loader />}
 
-      {contactMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
-            <h2 className="font-bold text-[1.5rem]">Contact Us</h2>
-            <h3 className="font-medium text-[1.1rem] sm:text-[1.3rem] text-center">
-              Email: uni@email.com
-            </h3>
-            <h3 className="font-medium text-[1.1rem] sm:text-[1.3rem] text-center">
-              Call: 08112345678
-            </h3>
-            <button
-              onClick={closeContact}
-              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-      {loginMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
-            <h2 className="font-bold text-[1.5rem]">Login</h2>
-            <button
-              onClick={studentLogin}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Student login
-            </button>
-            <button
-              onClick={staffLogin}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Staff login
-            </button>
-            <button
-              onClick={toggleLoginMod}
-              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-      {regMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
-            <h2 className="font-bold text-[1.5rem]">Register</h2>
-            <button
-              onClick={studentReg}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Student Registration
-            </button>
-            <button
-              onClick={staffReg}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Staff Registration
-            </button>
-            <button
-              onClick={toggleRegMod}
-              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-      <div className="pt-[80px] md:pt-0">
+      <div className="pt-[80px]">
         <div className="h-screen flex flex-col gap-6 md:gap-0 md:flex-row">
           <div className="flex w-full md:w-[40%] py-5 px-5 bg-gradient-to-tr from-[#006701] to-[#006701]/60 justify-start md:justify-around items-center">
             <div>
-              <h1 className="text-white font-bold text-4xl font-sans">Uni</h1>
+              <h1 className="text-white font-bold text-4xl font-sans">
+                Regispro
+              </h1>
               <p className="text-white mt-1">
                 The foundation for achieving success
               </p>
               <Link to="/">
-                <button className="block w-32 bg-white text-[#006701] mt-4 py-2  rounded-2xl font-bold mb-2">
+                <button className="block w-32 bg-white text-[#135874] mt-4 py-2  rounded-2xl font-bold mb-2">
                   Back to home
                 </button>
               </Link>
             </div>
           </div>
-          <div className="flex w-full md:w-[60%] justify-center items-center bg-white">
-            <form className="bg-white">
+          <div className="flex w-full md:w-[60%] justify-center items-center bg-white pt-10 pb-10 my-10">
+            <form className="bg-white min-w-[300px] w-[50%]">
               <h1 className="text-gray-800 font-bold text-2xl mb-1">
                 Staff Registration
               </h1>
               <p className="text-sm font-normal text-gray-600 mb-7">Welcome!</p>
-              <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                  />
-                </svg>
-                <input
-                  className="pl-2 outline-none border-none"
-                  type="text"
-                  name=""
-                  id=""
-                  placeholder="Email Address"
-                />
-              </div>
-              <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-gray-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <input
-                  className="pl-2 outline-none border-none"
-                  type="text"
-                  name=""
-                  id=""
-                  placeholder="Password"
-                />
-              </div>
+              <input
+                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+                type="text"
+                id="first_name"
+                value={formDataStaffReg.first_name}
+                onChange={handleInputChangeStaff}
+                placeholder="First Name"
+              />
+              <input
+                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+                type="text"
+                id="last_name"
+                value={formDataStaffReg.last_name}
+                onChange={handleInputChangeStaff}
+                placeholder="Last Name"
+              />
+              <input
+                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+                type="text"
+                id="staff_number"
+                value={formDataStaffReg.staff_number}
+                onChange={handleInputChangeStaff}
+                placeholder="Staff Number"
+              />
+              <input
+                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+                type="text"
+                id="address"
+                value={formDataStaffReg.address}
+                onChange={handleInputChangeStaff}
+                placeholder="Address"
+              />
+              <input
+                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+                type="number"
+                id="contact"
+                value={formDataStaffReg.contact}
+                onChange={handleInputChangeStaff}
+                placeholder="Contact"
+              />
+              <label htmlFor="date_of_birth" className="mb-1">
+                Date of birth
+              </label>
+              <input
+                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+                type="date"
+                id="date_of_birth"
+                value={formDataStaffReg.date_of_birth}
+                onChange={handleInputChangeStaff}
+                placeholder="date of birth"
+              />
+              <label htmlFor="doc_file" className="mb-1">
+                Upload Passport<span className="text-gray-500"> ( Image )</span>
+              </label>
+              <input
+                id="passport"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChangeStaff}
+                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+              />
+              <select
+                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+                id="department"
+                value={formDataStaffReg.department}
+                onChange={handleInputChangeStaff}
+              >
+                <option value="" hidden>
+                  Select Department
+                </option>
+                {departmentOptions.map((department) => (
+                  <option key={department.id} value={department.id}>
+                    {department.name}
+                  </option>
+                ))}
+              </select>
+              <input
+                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+                type="text"
+                id="email"
+                value={formDataStaffReg.email}
+                onChange={handleInputChangeStaff}
+                placeholder="Email"
+              />
+
+              {validationEror && (
+                <div className="w-full p-2 border border-red-400 rounded-2xl text-[.85rem] bg-red-400/30">
+                  Please fill all fields
+                </div>
+              )}
               <button
                 type="submit"
+                onClick={handleSubmit}
                 className="block w-full bg-[#fdc901] mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
               >
                 Register
@@ -173,6 +199,17 @@ const StaffReg = () => {
         </div>{" "}
       </div>
       <ScrollToTop />
+
+      {registerSuccess && (
+        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/60 p-4 flex justify-center items-center z-40">
+          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
+            <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">
+              Student Registration Successfull
+            </h2>
+            <p className="text-[#006701] font-medium">Redirecting...</p>
+          </div>
+        </div>
+      )}
     </>
   );
 };

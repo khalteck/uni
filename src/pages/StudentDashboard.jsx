@@ -17,7 +17,7 @@ const StudentDashboard = () => {
         </div>
 
         {/* Event container */}
-        <div className="w-full lg:max-w-[85%] lg:min-w-[400px] grid grid-flow-row gap-5 sm:gap-8 grid-cols-1 md:grid-cols-2 grid-auto-rows-auto">
+        <div className="w-full lg:max-w-[85%] lg:min-w-[500px] grid grid-flow-row-dense gap-5 sm:gap-8 grid-cols-1 md:grid-cols-2">
           <DocumentCard />
           <DocumentCard />
           <DocumentCard />
@@ -30,7 +30,7 @@ const StudentDashboard = () => {
         <div className="flex gap-2 items-center text-black text-[1.5rem] mb-6 mt-14">
           <h2>Submit Documents</h2>
         </div>
-        <form className="">
+        <form className="w-full lg:max-w-[85%] lg:min-w-[400px]">
           <label htmlFor="doc_name" className="mb-1 font-medium text-[1.2rem]">
             Document Name
           </label>

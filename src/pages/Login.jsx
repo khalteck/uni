@@ -1,101 +1,71 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import Loader from "../components/Loader";
 import { useAppContext } from "../contexts/AppContext";
 import ScrollToTop from "../ScrollToTop";
 
 const Login = () => {
   const {
-    closeContact,
-    contactMod,
     loader,
-    loginMod,
-    toggleLoginMod,
-    studentLogin,
-    staffLogin,
-    regMod,
-    toggleRegMod,
-    studentReg,
-    staffReg,
+    formDataStudentLogin,
+    handleLoginInputChange,
+    validationEror,
+    setValidationEror,
+    loginStudent,
+    registerSuccess,
+    registerSuccessData,
+    studentsList,
+    setRegisterSuccess,
   } = useAppContext();
+
+  // console.log("regData => ", registerSuccessData);
+  // console.log("students list => ", studentsList);
+
+  const currentRegisteredStudent = studentsList?.filter((item) => {
+    const studentData = item?.student_data;
+    return (
+      studentData?.first_name === registerSuccessData?.first_name &&
+      studentData?.middle_name === registerSuccessData?.middle_name &&
+      studentData?.last_name === registerSuccessData?.last_name
+    );
+  })[0];
+
+  // console.log("Current registered student => ", currentRegisteredStudent);
+
+  const navigate = useNavigate();
+  const [loginSuccess, setLoginSuccess] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // console.log(formDataStudentLogin);
+
+    if (formDataStudentLogin?.matric_number && formDataStudentLogin?.password) {
+      const res = await loginStudent();
+      console.log(res);
+      setLoginSuccess(true);
+      setRegisterSuccess(false);
+      setTimeout(() => {
+        setLoginSuccess(false);
+        navigate("/student-dashboard");
+      }, 3000);
+    } else {
+      setValidationEror(true);
+    }
+  };
+  console.log(registerSuccess);
   return (
     <>
       <Header />
       {loader && <Loader />}
 
-      {contactMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
-            <h2 className="font-bold text-[1.5rem]">Contact Us</h2>
-            <h3 className="font-medium text-[1.1rem] sm:text-[1.3rem] text-center">
-              Email: uni@email.com
-            </h3>
-            <h3 className="font-medium text-[1.1rem] sm:text-[1.3rem] text-center">
-              Call: 08112345678
-            </h3>
-            <button
-              onClick={closeContact}
-              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-      {loginMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
-            <h2 className="font-bold text-[1.5rem]">Login</h2>
-            <button
-              onClick={studentLogin}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Student login
-            </button>
-            <button
-              onClick={staffLogin}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Staff login
-            </button>
-            <button
-              onClick={toggleLoginMod}
-              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-      {regMod && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/90 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
-            <h2 className="font-bold text-[1.5rem]">Register</h2>
-            <button
-              onClick={studentReg}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Student Registration
-            </button>
-            <button
-              onClick={staffReg}
-              className="w-full text-sm bg-transparent px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-[#fdc901] font-medium border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Staff Registration
-            </button>
-            <button
-              onClick={toggleRegMod}
-              className="text-sm bg-[#fdc901] px-10 py-3 uppercase hover:bg-[#fdc901]/30 border-[#fdc901] text-white border-2 tracking-widest rounded-md transition-all duration-300"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
       <div className="pt-[80px] md:pt-0">
         <div className="h-screen flex flex-col gap-6 md:gap-0 md:flex-row">
           <div className="flex w-full md:w-[40%] py-5 px-5 bg-gradient-to-tr from-[#006701] to-[#006701]/60 justify-start md:justify-around items-center">
             <div>
-              <h1 className="text-white font-bold text-4xl font-sans">Uni</h1>
+              <h1 className="text-white font-bold text-4xl font-sans">
+                Regispro
+              </h1>
               <p className="text-white mt-1">
                 The foundation for achieving success
               </p>
@@ -106,8 +76,22 @@ const Login = () => {
               </Link>
             </div>
           </div>
-          <div className="flex w-full md:w-[60%] justify-center items-center bg-white">
+          <div className="flex flex-col w-full md:w-[60%] justify-center items-center bg-white">
             <form className="bg-white">
+              {registerSuccess && (
+                <div className="w-full my-4 text-[#006701]">
+                  <h3>Registration Success!</h3>
+                  <p>
+                    Student Matric Number:{" "}
+                    <span className="font-bold">
+                      {currentRegisteredStudent?.student_data?.matric_no}
+                    </span>
+                  </p>
+                  <p>
+                    Password: <span className="font-bold">Student Surname</span>
+                  </p>
+                </div>
+              )}
               <h1 className="text-gray-800 font-bold text-2xl mb-1">
                 Student Login
               </h1>
@@ -132,8 +116,9 @@ const Login = () => {
                 <input
                   className="pl-2 outline-none border-none"
                   type="text"
-                  name=""
-                  id=""
+                  id="matric_number"
+                  value={formDataStudentLogin.matric_number}
+                  onChange={handleLoginInputChange}
                   placeholder="Matric Number"
                 />
               </div>
@@ -153,12 +138,20 @@ const Login = () => {
                 <input
                   className="pl-2 outline-none border-none"
                   type="password"
-                  name=""
-                  id=""
+                  id="password"
+                  value={formDataStudentLogin.password}
+                  onChange={handleLoginInputChange}
                   placeholder="Password"
                 />
               </div>
+
+              {validationEror && (
+                <div className="w-full p-2 border border-red-400 rounded-2xl text-[.85rem] bg-red-400/30 mt-4">
+                  Please fill all fields
+                </div>
+              )}
               <button
+                onClick={handleSubmit}
                 type="submit"
                 className="block w-full bg-[#fdc901] mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
               >
@@ -175,6 +168,17 @@ const Login = () => {
         </div>{" "}
       </div>
       <ScrollToTop />
+
+      {loginSuccess && (
+        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/60 p-4 flex justify-center items-center z-40">
+          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
+            <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">
+              Student Login Successfull
+            </h2>
+            <p className="text-[#006701] font-medium">Redirecting...</p>
+          </div>
+        </div>
+      )}
     </>
   );
 };
