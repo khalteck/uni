@@ -1860,6 +1860,10 @@ video {
     padding-top: 260px;
   }
 
+  .md\:text-start {
+    text-align: start;
+  }
+
   .md\:text-\[1\.23rem\] {
     font-size: 1.23rem;
   }

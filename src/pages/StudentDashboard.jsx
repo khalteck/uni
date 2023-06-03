@@ -40,7 +40,7 @@ const StudentDashboard = () => {
         {/* Heading */}
         <div className="w-full">
           <div className="w-full p-4 text-[.9rem] md:text-[1.2rem] bg-white border border-[#006701] text-[#006701] rounded-lg mb-10">
-            <h2 className="text-center font-bold text-[1.2rem] md:text-[1.5rem] mb-3">
+            <h2 className="text-center md:text-start font-bold text-[1.2rem] md:text-[1.5rem] mb-3">
               Student details
             </h2>
             <ul className="flex flex-col gap-3">
