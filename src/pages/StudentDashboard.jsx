@@ -21,16 +21,10 @@ const StudentDashboard = () => {
     loader,
     userData,
   } = useAppContext();
-  console.log(userData);
+  // console.log(userData);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   // console.log(formDataStudentLogin);
-  //   await loginStudent();
-
-  // };
-
-  const paid = userData?.student_data?.is_paid;
+  const user = userData?.student_data;
+  const paid = user?.is_paid;
 
   const navigate = useNavigate();
   function pay() {
@@ -45,6 +39,32 @@ const StudentDashboard = () => {
       <div className="w-full min-h-screen px-5 sm:pl-[230px] lg:pl-[280px] sm:pr-[30px] lg:pr-[330px] py-[80px] sm:py-[110px] bg-white flex flex-col gap-14">
         {/* Heading */}
         <div className="w-full">
+          <div className="w-full p-4 text-[.9rem] md:text-[1.2rem] bg-white border border-[#006701] text-[#006701] rounded-lg mb-10">
+            <h2 className="text-center font-bold text-[1.2rem] md:text-[1.5rem] mb-3">
+              Student details
+            </h2>
+            <ul className="flex flex-col gap-3">
+              <li className="flex gap-3 items-center">
+                <p>Full Name:</p>
+                <p className="font-bold">
+                  {user?.first_name} {user?.middle_name} {user?.last_name}
+                </p>
+              </li>
+              <li className="flex gap-3 items-center">
+                <p>Department:</p>
+                <p className="font-bold">{user?.department}</p>
+              </li>
+              <li className="flex gap-3 items-center">
+                <p>Matric No:</p>
+                <p className="font-bold">{user?.matric_no}</p>
+              </li>
+              <li className="flex gap-3 items-center">
+                <p>School Fees:</p>
+                <p className="font-bold">{user?.is_paid ? "Paid" : "Unpaid"}</p>
+              </li>
+            </ul>
+          </div>
+
           <div className="flex gap-2 items-center text-black text-[1.5rem] mb-6">
             <h2>All Documents</h2>
           </div>
@@ -61,8 +81,13 @@ const StudentDashboard = () => {
               <p>Pay your school fees, to gain access...</p>
               <button
                 onClick={pay}
-                className="w-fit mx-auto border border-[#006701] bg-[#006701]/70 text-white py-2 px-10 rounded-md cursor-pointer"
+                className="w-fit mx-auto border border-[#006701] bg-[#006701]/70 text-white py-2 px-10 rounded-md cursor-pointer flex gap-2 items-center justify-center"
               >
+                <img
+                  alt="building"
+                  src="/images/icons8-payment-48.png"
+                  className="w-5 h-5"
+                />
                 Pay school fess
               </button>
             </div>
@@ -159,8 +184,13 @@ const StudentDashboard = () => {
               <p>Submit document is unavailable...</p>
               <button
                 onClick={(e) => handleSubmitDoc(e)}
-                className="w-fit mx-auto border border-[#006701] bg-[#006701]/70 text-white py-2 px-10 rounded-md cursor-pointer"
+                className="w-fit mx-auto border border-[#006701] bg-[#006701]/70 text-white py-2 px-10 rounded-md cursor-pointer flex gap-2 items-center justify-center"
               >
+                <img
+                  alt="building"
+                  src="/images/icons8-payment-48.png"
+                  className="w-5 h-5"
+                />
                 Pay school fess
               </button>
             </div>

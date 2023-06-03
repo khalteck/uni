@@ -47,7 +47,7 @@ const Login = () => {
       setValidationEror(true);
     }
   };
-  // console.log(registerSuccess);
+  // console.log(registerSuccessData);
   return (
     <>
       <Header />
@@ -72,7 +72,7 @@ const Login = () => {
           </div>
           <div className="flex flex-col w-full md:w-[60%] justify-center items-center bg-white">
             <form className="bg-white">
-              {registerSuccessData && (
+              {registerSuccessData?.student_data && (
                 <div className="w-full my-4 text-[#006701]">
                   <h3>Student Registered!</h3>
                   <p>

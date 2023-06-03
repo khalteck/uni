@@ -13,6 +13,11 @@ const AppContextProvider = ({ children }) => {
 
   const [loader, setLoader] = useState(false);
 
+  const [openDropdown, setOpenDropdown] = useState(false);
+  function toggleDropdown() {
+    setOpenDropdown((prev) => !prev);
+  }
+
   const [contactMod, setContactMod] = useState(false);
   function openContact() {
     setContactMod(true);
@@ -311,25 +316,27 @@ const AppContextProvider = ({ children }) => {
   //to get student biodata
   const [studentBio, setstudentBio] = useState([]);
   useEffect(() => {
-    const getstudentBio = async () => {
-      setLoader(true);
-      try {
-        const response = await fetch(
-          `https://student-management-system-production-54cf.up.railway.app/api/conn/biodata/${userData?.student_data?.id}`
-        );
-        const data = await response?.json();
-        if (response?.ok) {
-          // console.log("my biodata", data);
-          setstudentBio(await data?.student_data);
+    if (userData?.token) {
+      const getstudentBio = async () => {
+        setLoader(true);
+        try {
+          const response = await fetch(
+            `https://student-management-system-production-54cf.up.railway.app/api/conn/biodata/${userData?.student_data?.id}`
+          );
+          const data = await response?.json();
+          if (response?.ok) {
+            // console.log("my biodata", data);
+            setstudentBio(await data?.student_data);
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoader(false);
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoader(false);
-      }
-    };
+      };
 
-    getstudentBio();
+      getstudentBio();
+    }
   }, []);
 
   //to register student
@@ -554,6 +561,8 @@ const AppContextProvider = ({ children }) => {
         handleSubmitDoc,
         bursarsList,
         submitError,
+        toggleDropdown,
+        openDropdown,
       }}
     >
       {children}

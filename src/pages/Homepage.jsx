@@ -100,8 +100,8 @@ const Homepage = () => {
       <ScrollToTop />
 
       {loggedOut && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/40 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
+        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/60 p-4 flex justify-center z-40">
+          <div className="w-full h-fit mt-10 sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
             <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">
               Logged Out!
             </h2>
