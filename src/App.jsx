@@ -7,6 +7,7 @@ import Homepage from "./pages/Homepage";
 import StaffDashboard from "./pages/StaffDashboard";
 
 const StudentDashboard = lazy(() => import("./pages/StudentDashboard"));
+const StudentPayment = lazy(() => import("./pages/StudentPayment"));
 const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
 const StaffReg = lazy(() => import("./pages/StaffReg"));
@@ -21,6 +22,10 @@ function App() {
         <Route
           path="/student-dashboard"
           element={userData?.student_data ? <StudentDashboard /> : <Login />}
+        />
+        <Route
+          path="/student-payment"
+          element={userData?.student_data ? <StudentPayment /> : <Login />}
         />
         <Route path="/staff-dashboard" element={<StaffDashboard />} />
         {/* <Route

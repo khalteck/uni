@@ -17,6 +17,8 @@ const Login = () => {
     registerSuccessData,
     studentsList,
     setRegisterSuccess,
+    loginSuccess,
+    loginError,
   } = useAppContext();
 
   // console.log("regData => ", registerSuccessData);
@@ -34,26 +36,18 @@ const Login = () => {
   // console.log("Current registered student => ", currentRegisteredStudent);
 
   const navigate = useNavigate();
-  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(formDataStudentLogin);
 
     if (formDataStudentLogin?.matric_number && formDataStudentLogin?.password) {
-      const res = await loginStudent();
-      console.log(res);
-      setLoginSuccess(true);
-      setRegisterSuccess(false);
-      setTimeout(() => {
-        setLoginSuccess(false);
-        navigate("/student-dashboard");
-      }, 3000);
+      await loginStudent();
     } else {
       setValidationEror(true);
     }
   };
-  console.log(registerSuccess);
+  // console.log(registerSuccess);
   return (
     <>
       <Header />
@@ -78,17 +72,18 @@ const Login = () => {
           </div>
           <div className="flex flex-col w-full md:w-[60%] justify-center items-center bg-white">
             <form className="bg-white">
-              {registerSuccess && (
+              {registerSuccessData && (
                 <div className="w-full my-4 text-[#006701]">
-                  <h3>Registration Success!</h3>
+                  <h3>Student Registered!</h3>
                   <p>
                     Student Matric Number:{" "}
                     <span className="font-bold">
-                      {currentRegisteredStudent?.student_data?.matric_no}
+                      {registerSuccessData?.student_data?.matric_no}
                     </span>
                   </p>
                   <p>
-                    Password: <span className="font-bold">Student Surname</span>
+                    Password: <span className="font-bold">Student Surname</span>{" "}
+                    (Case sensitive)
                   </p>
                 </div>
               )}
@@ -148,6 +143,11 @@ const Login = () => {
               {validationEror && (
                 <div className="w-full p-2 border border-red-400 rounded-2xl text-[.85rem] bg-red-400/30 mt-4">
                   Please fill all fields
+                </div>
+              )}
+              {loginError && (
+                <div className="w-full p-2 border border-red-400 rounded-2xl text-[.85rem] bg-red-400/30 mt-4">
+                  {loginError}
                 </div>
               )}
               <button

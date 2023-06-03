@@ -7,7 +7,7 @@ import StaffDocCard from "../components/StaffDocCard";
 import { useAppContext } from "../contexts/AppContext";
 
 const StaffDashboard = () => {
-  const { loader, studentsList } = useAppContext();
+  const { loader, studentsList, submittedDocs } = useAppContext();
   //   console.log(deptStudentsList);
   return (
     <>

@@ -51,12 +51,13 @@ const StaffReg = () => {
       formDataStaffReg?.department &&
       formDataStaffReg?.email
     ) {
-      const res = await registerStaff();
-      console.log(res);
+      const data = await registerStaff();
+      console.log(data);
       setRegisterSuccess(true);
       setTimeout(() => {
-        setRegisterSuccess(true);
-        navigate("/login-staff");
+        setRegisterSuccess(false);
+        // navigate("/login-staff");
+        // window.location.reload();
       }, 3000);
     } else {
       setValidationEror(true);
@@ -117,30 +118,19 @@ const StaffReg = () => {
               />
               <input
                 className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
-                type="text"
-                id="address"
-                value={formDataStaffReg.address}
-                onChange={handleInputChangeStaff}
-                placeholder="Address"
-              />
-              <input
-                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
                 type="number"
                 id="contact"
                 value={formDataStaffReg.contact}
                 onChange={handleInputChangeStaff}
                 placeholder="Contact"
               />
-              <label htmlFor="date_of_birth" className="mb-1">
-                Date of birth
-              </label>
               <input
                 className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
-                type="date"
-                id="date_of_birth"
-                value={formDataStaffReg.date_of_birth}
+                type="text"
+                id="email"
+                value={formDataStaffReg.email}
                 onChange={handleInputChangeStaff}
-                placeholder="date of birth"
+                placeholder="Email"
               />
               <label htmlFor="doc_file" className="mb-1">
                 Upload Passport<span className="text-gray-500"> ( Image )</span>
@@ -162,18 +152,29 @@ const StaffReg = () => {
                   Select Department
                 </option>
                 {departmentOptions.map((department) => (
-                  <option key={department.id} value={department.id}>
+                  <option key={department.id} value={`${department.id}`}>
                     {department.name}
                   </option>
                 ))}
               </select>
+              <label htmlFor="date_of_birth" className="mb-1">
+                Date of birth
+              </label>
+              <input
+                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+                type="date"
+                id="date_of_birth"
+                value={formDataStaffReg.date_of_birth}
+                onChange={handleInputChangeStaff}
+                placeholder="date of birth"
+              />
               <input
                 className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
                 type="text"
-                id="email"
-                value={formDataStaffReg.email}
+                id="address"
+                value={formDataStaffReg.address}
                 onChange={handleInputChangeStaff}
-                placeholder="Email"
+                placeholder="Address"
               />
 
               {validationEror && (

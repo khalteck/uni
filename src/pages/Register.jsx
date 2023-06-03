@@ -16,6 +16,7 @@ const Register = () => {
     setValidationEror,
     registerSuccess,
     setRegisterSuccess,
+    regError,
   } = useAppContext();
 
   const navigate = useNavigate();
@@ -54,13 +55,11 @@ const Register = () => {
       formDataStudentReg?.department &&
       formDataStudentReg?.email
     ) {
-      const res = await registerStudent();
-      console.log(res);
-      setRegisterSuccess(true);
-      setTimeout(() => {
-        setRegisterSuccess(true);
-        navigate("/login");
-      }, 3000);
+      await registerStudent();
+      // setTimeout(() => {
+      //   setRegisterSuccess(true);
+      //   navigate("/login");
+      // }, 3000);
     } else {
       setValidationEror(true);
     }
@@ -210,6 +209,11 @@ const Register = () => {
               {validationEror && (
                 <div className="w-full p-2 border border-red-400 rounded-2xl text-[.85rem] bg-red-400/30">
                   Please fill all fields
+                </div>
+              )}
+              {regError && (
+                <div className="w-full p-2 border border-red-400 rounded-2xl text-[.85rem] bg-red-400/30">
+                  {regError}
                 </div>
               )}
               <button

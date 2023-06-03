@@ -54,37 +54,6 @@ const AppContextProvider = ({ children }) => {
     setOpenSearch((prev) => !prev);
   }
 
-  const [submitDoc, setSubmitDoc] = useState({
-    doc_name: "",
-    document: null,
-  });
-  // console.log(submitDoc);
-
-  function handlesubmitDocChange(event) {
-    const { id, value } = event.target;
-    setSubmitError("");
-    setSubmitDoc((prev) => {
-      return {
-        ...prev,
-        [id]: value,
-      };
-    });
-  }
-
-  const handleDrop = (acceptedFiles) => {
-    const file = acceptedFiles[0];
-    setSubmitDoc({
-      ...submitDoc,
-      document: file,
-    });
-  };
-
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: "*",
-    multiple: false,
-    onDrop: handleDrop,
-  });
-
   const [validationEror, setValidationEror] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(false);
 
@@ -124,7 +93,10 @@ const AppContextProvider = ({ children }) => {
     });
   };
 
-  const [registerSuccessData, setRegisterSuccessData] = useState({});
+  const [registerSuccessData, setRegisterSuccessData] = useState(
+    JSON.parse(localStorage.getItem("loginDetails")) || {}
+  );
+  const [regError, setRegError] = useState("");
 
   const registerStudent = async () => {
     setLoader(true);
@@ -150,14 +122,20 @@ const AppContextProvider = ({ children }) => {
           body: form,
         }
       );
+      const data = await response?.json();
 
       if (response?.ok) {
         console.log("Registration successful");
-        const data = response?.json();
+        localStorage.setItem("loginDetails", JSON.stringify(data));
         setRegisterSuccessData(await data);
-        return data;
+        setRegisterSuccess(true);
+        setTimeout(() => {
+          setRegisterSuccess(false);
+          navigate("/login");
+        }, 3000);
       } else {
         console.log("Registration failed");
+        setRegError(data?.message);
       }
     } catch (error) {
       console.error("Error occurred during registration:", error);
@@ -175,6 +153,7 @@ const AppContextProvider = ({ children }) => {
   const handleLoginInputChange = (e) => {
     const { id, value } = e.target;
     setValidationEror(false);
+    setLoginError("");
     setFormDataStudentLogin((prevFormDataStudentLogin) => ({
       ...prevFormDataStudentLogin,
       [id]: value,
@@ -184,6 +163,9 @@ const AppContextProvider = ({ children }) => {
   const [userData, setUserData] = useState(
     JSON.parse(localStorage.getItem("userData")) || {}
   );
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [loginError, setLoginError] = useState("");
+
   //to send student login data to endpoint
   const loginStudent = async () => {
     setLoader(true);
@@ -198,13 +180,18 @@ const AppContextProvider = ({ children }) => {
           body: JSON.stringify(formDataStudentLogin),
         }
       );
+      const data = await response?.json();
+
       if (response?.ok) {
-        const data = response?.json();
         localStorage.setItem("userData", JSON.stringify(await data));
         setUserData(await data);
-        // console.log("data =>", await data);
+        setLoginSuccess(true);
+        setTimeout(() => {
+          setLoginSuccess(false);
+          navigate("/student-dashboard");
+        }, 3000);
       } else {
-        console.log("login failed");
+        setLoginError(data?.message);
       }
     } catch (error) {
       console.error("Error occurred during login:", error);
@@ -212,6 +199,40 @@ const AppContextProvider = ({ children }) => {
       setLoader(false);
     }
   };
+
+  // to get submitted documents list
+  const [submittedDocs, setSubmittedDocs] = useState([]);
+
+  useEffect(() => {
+    if (userData?.token) {
+      const getSubmittedDocs = async () => {
+        setLoader(true);
+        try {
+          const response = await fetch(
+            "https://student-management-system-production-54cf.up.railway.app/api/conn/all/documents",
+            {
+              headers: {
+                Authorization: `Bearer ${userData?.token}`,
+              },
+            }
+          );
+          const data = await response.json();
+
+          if (response?.ok) {
+            console.log("docs data", data);
+            setSubmittedDocs(data);
+          } else {
+            console.log("failed to get submitted docs");
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoader(false);
+        }
+      };
+      getSubmittedDocs();
+    }
+  }, [userData]);
 
   //to get all students
   const [studentsList, setStudentsList] = useState([]);
@@ -276,7 +297,7 @@ const AppContextProvider = ({ children }) => {
         );
         const data = await response?.json();
         // console.log("bursars list", data);
-        setBursarsList(await data?.yct_students);
+        setBursarsList(await data?.bursars);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -297,8 +318,10 @@ const AppContextProvider = ({ children }) => {
           `https://student-management-system-production-54cf.up.railway.app/api/conn/biodata/${userData?.student_data?.id}`
         );
         const data = await response?.json();
-        console.log("my biodata", data);
-        // setstudentBio(await data?.yct_students);
+        if (response?.ok) {
+          // console.log("my biodata", data);
+          setstudentBio(await data?.student_data);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -318,9 +341,10 @@ const AppContextProvider = ({ children }) => {
     contact: "",
     date_of_birth: "",
     passport: {},
-    department: "",
+    department_id: "",
     email: "",
   });
+  // console.log(formDataStaffReg);
 
   const handleInputChangeStaff = (e) => {
     const { id, value } = e.target;
@@ -355,7 +379,7 @@ const AppContextProvider = ({ children }) => {
       form.append("contact", formDataStaffReg.contact);
       form.append("date_of_birth", formDataStaffReg.date_of_birth);
       form.append("passport", formDataStaffReg.passport);
-      form.append("department", formDataStaffReg.department);
+      form.append("department_id", formDataStaffReg.department_id);
       form.append("email", formDataStaffReg.email);
 
       const response = await fetch(
@@ -386,6 +410,7 @@ const AppContextProvider = ({ children }) => {
 
   function logout() {
     localStorage.removeItem("userData");
+    localStorage.removeItem("loginDetails");
     setUserData({});
     navigate("/");
     window.scrollTo(0, 0);
@@ -394,6 +419,88 @@ const AppContextProvider = ({ children }) => {
       setLoggedOut(false);
     }, 3000);
   }
+
+  const [submitError, setSubmitError] = useState(false);
+
+  const [submitDoc, setSubmitDoc] = useState({
+    name: "",
+    file: null,
+  });
+
+  function handlesubmitDocChange(event) {
+    const { id, value } = event.target;
+    setSubmitError("");
+    setSubmitDoc((prev) => {
+      return {
+        ...prev,
+        [id]: value,
+      };
+    });
+  }
+  const handleDrop = (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    setSubmitDoc({
+      ...submitDoc,
+      file: file,
+    });
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: "*",
+    multiple: false,
+    onDrop: handleDrop,
+  });
+  //to submit docs
+  const [DocSubmitSuccess, setDocSubmitSuccess] = useState(false);
+
+  const handleSubmitDoc = async (e) => {
+    e.preventDefault();
+
+    if (submitDoc?.name && submitDoc?.file) {
+      setLoader(true);
+      const bursar = bursarsList?.filter((item) => {
+        return item?.department === userData?.student_data?.department;
+      });
+
+      try {
+        const formDataToSend = new URLSearchParams();
+        formDataToSend.append("name", submitDoc?.name);
+        formDataToSend.append("file", submitDoc?.file);
+
+        const response = await fetch(
+          `https://student-management-system-production-54cf.up.railway.app/api/conn/submit/document/${bursar[0]?.id}`,
+          {
+            method: "POST",
+            body: formDataToSend,
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              Authorization: `Bearer ${userData?.token}`,
+            },
+          }
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log("doc sent", data);
+          setDocSubmitSuccess(true);
+          setTimeout(() => {
+            setDocSubmitSuccess(false);
+          }, 3000);
+        } else {
+          console.log("failed to send doc", data);
+
+          throw new Error("Server error.");
+        }
+      } catch (error) {
+        console.error(error);
+        setSubmitError("Bad network connection");
+      } finally {
+        setLoader(false);
+      }
+    } else {
+      setSubmitError("Please fill all fields");
+    }
+  };
 
   return (
     <AppContext.Provider
@@ -439,7 +546,14 @@ const AppContextProvider = ({ children }) => {
         logout,
         handleInputChangeStaff,
         handleFileChangeStaff,
-        // deptStudentsList,
+        loginSuccess,
+        loginError,
+        regError,
+        submittedDocs,
+        DocSubmitSuccess,
+        handleSubmitDoc,
+        bursarsList,
+        submitError,
       }}
     >
       {children}
