@@ -31,10 +31,9 @@ const Register = () => {
     { id: 7, name: "Civil Engineering" },
     { id: 8, name: "Mechanical Engineering" },
     { id: 9, name: "Electrical Engineering" },
-    { id: 10, name: "Mechanical Engineering" },
-    { id: 11, name: "Mathematics" },
-    { id: 12, name: "Statistics" },
-    { id: 13, name: "Computer Engineering" },
+    { id: 10, name: "Mathematics" },
+    { id: 11, name: "Statistics" },
+    { id: 12, name: "Computer Engineering" },
   ];
 
   const handleSubmit = async (e) => {
