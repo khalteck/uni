@@ -6,6 +6,7 @@ const HeaderDashboard = () => {
     useAppContext();
 
   const user = userData?.student_data;
+  const userStaff = userData?.bursar_data;
 
   const [openStudent, setOpenStudent] = useState(false);
   function toggleStudent() {
@@ -25,13 +26,25 @@ const HeaderDashboard = () => {
             src="/images/icons8-dashboard-48.png"
             className="lg:w-6 lg:h-6 md:w-4 md:h-4 cursor-pointer"
           />
-          <h1 className="uppercase">Student Dashboard</h1>
+          {user ? (
+            <h1 className="uppercase">Student Dashboard</h1>
+          ) : (
+            <h1 className="uppercase">Staff Dashboard</h1>
+          )}
         </div>
 
         <div className="flex lg:gap-4 md:gap-3 items-center">
-          <h1 className="uppercase">
-            {user?.first_name} {user?.last_name} - [ {user?.matric_no} ]
-          </h1>
+          {user ? (
+            <h1 className="uppercase">
+              {user?.first_name} {user?.last_name} - {user?.department} - [{" "}
+              {user?.matric_no} ]
+            </h1>
+          ) : (
+            <h1 className="uppercase">
+              {userStaff?.first_name} {userStaff?.last_name} -{" "}
+              {userStaff?.department} - [ {userStaff?.staff_number} ]
+            </h1>
+          )}
         </div>
       </header>
 
@@ -57,10 +70,19 @@ const HeaderDashboard = () => {
             />
             {openStudent && (
               <div className="w-[200px] flex lg:gap-4 md:gap-3 items-center bg-[#006701] shadow absolute right-0 top-[60px] p-5 rounded-lg">
-                <h1 className="uppercase">
-                  {user?.first_name} {user?.last_name} <br /> [{" "}
-                  {user?.matric_no} ]
-                </h1>
+                {user ? (
+                  <h1 className="uppercase">
+                    {user?.first_name} {user?.last_name} <br /> [{" "}
+                    {user?.matric_no} ] <br />
+                    {user?.department}
+                  </h1>
+                ) : (
+                  <h1 className="uppercase">
+                    {userStaff?.first_name} {userStaff?.last_name} <br /> [{" "}
+                    {userStaff?.staff_number} ] <br />
+                    {userStaff?.department}
+                  </h1>
+                )}
               </div>
             )}
           </div>
@@ -85,15 +107,28 @@ const HeaderDashboard = () => {
           <img
             onClick={toggleStudent}
             alt="user"
-            src="/images/icons8-student-50.png"
+            src={
+              user
+                ? "/images/icons8-student-50.png"
+                : "/images/icons8-staff-50.png"
+            }
             className="w-7 h-7 cursor-pointer"
           />
           {openStudent && (
             <div className="w-[200px] flex lg:gap-4 md:gap-3 items-center bg-[#006701] shadow absolute right-0 top-[60px] p-5 rounded-lg">
-              <h1 className="uppercase">
-                {user?.first_name} {user?.last_name} <br /> [ {user?.matric_no}{" "}
-                ]
-              </h1>
+              {user ? (
+                <h1 className="uppercase">
+                  {user?.first_name} {user?.last_name} <br /> [{" "}
+                  {user?.matric_no} ] <br />
+                  {user?.department}
+                </h1>
+              ) : (
+                <h1 className="uppercase">
+                  {userStaff?.first_name} {userStaff?.last_name} <br /> [{" "}
+                  {userStaff?.staff_number} ] <br />
+                  {userStaff?.department}
+                </h1>
+              )}
             </div>
           )}
         </div>

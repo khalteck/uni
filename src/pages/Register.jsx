@@ -56,10 +56,6 @@ const Register = () => {
       formDataStudentReg?.email
     ) {
       await registerStudent();
-      // setTimeout(() => {
-      //   setRegisterSuccess(true);
-      //   navigate("/login");
-      // }, 3000);
     } else {
       setValidationEror(true);
     }

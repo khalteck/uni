@@ -44,4 +44,9 @@
       transform: scale(1, 1);
     }
   }
+  .pag a {
+    padding: 10px;
+    height: fit-content;
+    border-radius: 3px;
+  }
 }

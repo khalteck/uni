@@ -14,8 +14,9 @@ const StaffReg = () => {
     validationEror,
     setValidationEror,
     registerSuccess,
-    setRegisterSuccess,
+    handleSigChangeStaff,
     handleFileChangeStaff,
+    regError,
   } = useAppContext();
 
   const navigate = useNavigate();
@@ -47,18 +48,12 @@ const StaffReg = () => {
       formDataStaffReg?.address &&
       formDataStaffReg?.contact &&
       formDataStaffReg?.date_of_birth &&
-      formDataStaffReg?.passport &&
+      formDataStaffReg?.staff_passport &&
       formDataStaffReg?.department &&
-      formDataStaffReg?.email
+      formDataStaffReg?.email &&
+      formDataStaffReg?.staff_signatures
     ) {
-      const data = await registerStaff();
-      console.log(data);
-      setRegisterSuccess(true);
-      setTimeout(() => {
-        setRegisterSuccess(false);
-        // navigate("/login-staff");
-        // window.location.reload();
-      }, 3000);
+      await registerStaff();
     } else {
       setValidationEror(true);
     }
@@ -132,11 +127,11 @@ const StaffReg = () => {
                 onChange={handleInputChangeStaff}
                 placeholder="Email"
               />
-              <label htmlFor="doc_file" className="mb-1">
+              <label htmlFor="staff_passport" className="mb-1">
                 Upload Passport<span className="text-gray-500"> ( Image )</span>
               </label>
               <input
-                id="passport"
+                id="staff_passport"
                 type="file"
                 accept="image/*"
                 onChange={handleFileChangeStaff}
@@ -176,10 +171,26 @@ const StaffReg = () => {
                 onChange={handleInputChangeStaff}
                 placeholder="Address"
               />
+              <label htmlFor="staff_signatures" className="mb-1">
+                Upload Staff Signature
+                <span className="text-gray-500"> ( Image )</span>
+              </label>
+              <input
+                id="staff_signatures"
+                type="file"
+                accept="image/*"
+                onChange={handleSigChangeStaff}
+                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+              />
 
               {validationEror && (
                 <div className="w-full p-2 border border-red-400 rounded-2xl text-[.85rem] bg-red-400/30">
                   Please fill all fields
+                </div>
+              )}
+              {regError && (
+                <div className="w-full p-2 border border-red-400 rounded-2xl text-[.85rem] bg-red-400/30">
+                  {regError}
                 </div>
               )}
               <button

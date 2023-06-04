@@ -12,6 +12,7 @@ const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
 const StaffReg = lazy(() => import("./pages/StaffReg"));
 const StaffLogin = lazy(() => import("./pages/StaffLogin"));
+const StaffReview = lazy(() => import("./pages/StaffReview"));
 
 function App() {
   const { userData } = useAppContext();
@@ -27,11 +28,15 @@ function App() {
           path="/student-payment"
           element={userData?.student_data ? <StudentPayment /> : <Login />}
         />
-        <Route path="/staff-dashboard" element={<StaffDashboard />} />
-        {/* <Route
-          path="/doctor/:name"
-          element={userData?.token ? <Doctor /> : <Login />}
-        /> */}
+        <Route
+          path="/staff-dashboard"
+          element={userData?.bursar_data ? <StaffDashboard /> : <StaffLogin />}
+        />
+        <Route
+          path="/staff-review"
+          element={userData?.bursar_data ? <StaffReview /> : <StaffLogin />}
+        />
+
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register-staff" element={<StaffReg />} />

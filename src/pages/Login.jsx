@@ -21,25 +21,10 @@ const Login = () => {
     loginError,
   } = useAppContext();
 
-  // console.log("regData => ", registerSuccessData);
-  // console.log("students list => ", studentsList);
-
-  const currentRegisteredStudent = studentsList?.filter((item) => {
-    const studentData = item?.student_data;
-    return (
-      studentData?.first_name === registerSuccessData?.first_name &&
-      studentData?.middle_name === registerSuccessData?.middle_name &&
-      studentData?.last_name === registerSuccessData?.last_name
-    );
-  })[0];
-
-  // console.log("Current registered student => ", currentRegisteredStudent);
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(formDataStudentLogin);
 
     if (formDataStudentLogin?.matric_number && formDataStudentLogin?.password) {
       await loginStudent();
@@ -47,7 +32,7 @@ const Login = () => {
       setValidationEror(true);
     }
   };
-  // console.log(registerSuccessData);
+
   return (
     <>
       <Header />

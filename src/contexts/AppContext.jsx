@@ -149,7 +149,7 @@ const AppContextProvider = ({ children }) => {
     }
   };
 
-  //to register student
+  //to login student
   const [formDataStudentLogin, setFormDataStudentLogin] = useState({
     matric_number: "",
     password: "",
@@ -209,7 +209,7 @@ const AppContextProvider = ({ children }) => {
   const [submittedDocs, setSubmittedDocs] = useState([]);
 
   useEffect(() => {
-    if (userData?.token) {
+    if (userData?.student_data) {
       const getSubmittedDocs = async () => {
         setLoader(true);
         try {
@@ -251,7 +251,7 @@ const AppContextProvider = ({ children }) => {
           "https://student-management-system-production-54cf.up.railway.app/api/conn/all/student?page=1"
         );
         const data = await response?.json();
-        setStudentsList(data?.yct_students);
+        setStudentsList(await data?.student_data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -260,36 +260,39 @@ const AppContextProvider = ({ children }) => {
     };
 
     getstudentsList();
-  }, [registerSuccessData]);
+  }, [userData]);
 
-  //to get all students in a department
+  // to get all students in a department
   // const [deptStudentsList, setDeptStudentsList] = useState([]);
   // // console.log("students list => ", deptStudentsList);
 
   // useEffect(() => {
-  //   const getdeptStudentsList = async () => {
-  //     setLoader(true);
-  //     try {
-  //       const token = userData?.token;
-  //       const response = await fetch(
-  //         "https://student-management-system-production-54cf.up.railway.app/api/conn/my/students",
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-  //       const data = await response?.json();
-  //       setDeptStudentsList(data?.yct_students);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     } finally {
-  //       setLoader(false);
-  //     }
-  //   };
+  //   if (userData?.bursar_data) {
+  //     const getdeptStudentsList = async () => {
+  //       setLoader(true);
+  //       try {
+  //         const token = userData?.token;
+  //         const response = await fetch(
+  //           "https://student-management-system-production-54cf.up.railway.app/api/conn/my/students",
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${token}`,
+  //             },
+  //           }
+  //         );
+  //         const data = await response?.json();
+  //         console.log("dept student", data);
+  //         // setDeptStudentsList(data);
+  //       } catch (error) {
+  //         console.error("Error fetching data:", error);
+  //       } finally {
+  //         setLoader(false);
+  //       }
+  //     };
 
-  //   getdeptStudentsList();
-  // }, [registerSuccessData, userData?.token]);
+  //     getdeptStudentsList();
+  //   }
+  // }, [userData]);
 
   //to get all bursars
   const [bursarsList, setBursarsList] = useState([]);
@@ -301,7 +304,7 @@ const AppContextProvider = ({ children }) => {
           "https://student-management-system-production-54cf.up.railway.app/api/conn/all/bursar"
         );
         const data = await response?.json();
-        // console.log("bursars list", data);
+        console.log("bursars list", data);
         setBursarsList(await data?.bursars);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -316,7 +319,7 @@ const AppContextProvider = ({ children }) => {
   //to get student biodata
   const [studentBio, setstudentBio] = useState([]);
   useEffect(() => {
-    if (userData?.token) {
+    if (userData?.student_data) {
       const getstudentBio = async () => {
         setLoader(true);
         try {
@@ -347,11 +350,11 @@ const AppContextProvider = ({ children }) => {
     address: "",
     contact: "",
     date_of_birth: "",
-    passport: {},
-    department_id: "",
+    staff_passport: {},
+    department: "",
     email: "",
+    staff_signatures: {},
   });
-  // console.log(formDataStaffReg);
 
   const handleInputChangeStaff = (e) => {
     const { id, value } = e.target;
@@ -368,12 +371,24 @@ const AppContextProvider = ({ children }) => {
     setFormDataStaffReg((prev) => {
       return {
         ...prev,
-        passport: file,
+        staff_passport: file,
+      };
+    });
+  };
+  const handleSigChangeStaff = (event) => {
+    const file = event.target.files[0];
+    setValidationEror(false);
+    setFormDataStaffReg((prev) => {
+      return {
+        ...prev,
+        staff_signatures: file,
       };
     });
   };
 
-  const [regStaffSuccessData, setRegStaffSuccessData] = useState({});
+  const [regStaffSuccessData, setRegStaffSuccessData] = useState(
+    JSON.parse(localStorage.getItem("loginDetails")) || {}
+  );
 
   const registerStaff = async () => {
     setLoader(true);
@@ -385,9 +400,10 @@ const AppContextProvider = ({ children }) => {
       form.append("address", formDataStaffReg.address);
       form.append("contact", formDataStaffReg.contact);
       form.append("date_of_birth", formDataStaffReg.date_of_birth);
-      form.append("passport", formDataStaffReg.passport);
-      form.append("department_id", formDataStaffReg.department_id);
+      form.append("staff_passport", formDataStaffReg.staff_passport);
+      form.append("department", formDataStaffReg.department);
       form.append("email", formDataStaffReg.email);
+      form.append("staff_signatures", formDataStaffReg.staff_signatures);
 
       const response = await fetch(
         "https://student-management-system-production-54cf.up.railway.app/api/conn/register/bursar",
@@ -396,17 +412,79 @@ const AppContextProvider = ({ children }) => {
           body: form,
         }
       );
+      const data = await response?.json();
 
       if (response?.ok) {
         console.log("Registration successful");
-        const data = response?.json();
+        localStorage.setItem("loginDetails", JSON.stringify(data));
         setRegStaffSuccessData(await data);
-        return data;
+        setRegisterSuccess(true);
+        setTimeout(() => {
+          setRegisterSuccess(false);
+          navigate("/login-staff");
+        }, 3000);
       } else {
         console.log("Registration failed");
+        setRegError(data?.message);
       }
     } catch (error) {
       console.error("Error occurred during registration:", error);
+    } finally {
+      setLoader(false);
+    }
+  };
+
+  //to login staff
+  const [formDataStaffLogin, setFormDataStaffLogin] = useState({
+    staff_number: "",
+    password: "",
+  });
+
+  const handleStaffLoginChange = (e) => {
+    const { id, value } = e.target;
+    setValidationEror(false);
+    setLoginError("");
+    setFormDataStaffLogin((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  // const [userData, setUserData] = useState(
+  //   JSON.parse(localStorage.getItem("userData")) || {}
+  // );
+  // const [loginSuccess, setLoginSuccess] = useState(false);
+  // const [loginError, setLoginError] = useState("");
+
+  //to send student login data to endpoint
+  const loginStaff = async () => {
+    setLoader(true);
+    try {
+      const response = await fetch(
+        "https://student-management-system-production-54cf.up.railway.app/api/conn/login/bursar",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formDataStaffLogin),
+        }
+      );
+      const data = await response?.json();
+
+      if (response?.ok) {
+        localStorage.setItem("userData", JSON.stringify(await data));
+        setUserData(await data);
+        setLoginSuccess(true);
+        setTimeout(() => {
+          setLoginSuccess(false);
+          navigate("/staff-dashboard");
+        }, 3000);
+      } else {
+        setLoginError(data?.message);
+      }
+    } catch (error) {
+      console.error("Error occurred during login:", error);
     } finally {
       setLoader(false);
     }
@@ -424,6 +502,7 @@ const AppContextProvider = ({ children }) => {
     setLoggedOut(true);
     setTimeout(() => {
       setLoggedOut(false);
+      window.location.reload();
     }, 3000);
   }
 
@@ -509,6 +588,37 @@ const AppContextProvider = ({ children }) => {
     }
   };
 
+  // to get all docs submitted to this bursar
+  const [docSubmitted, setDocSubmitted] = useState([]);
+
+  useEffect(() => {
+    if (userData?.bursar_data) {
+      const getDocSubmitted = async () => {
+        setLoader(true);
+        try {
+          const token = userData?.token;
+          const response = await fetch(
+            "https://student-management-system-production-54cf.up.railway.app/api/conn/my/docs",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const data = await response?.json();
+          console.log("docs submitted", data);
+          // setDocSubmitted(data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoader(false);
+        }
+      };
+
+      getDocSubmitted();
+    }
+  }, [userData]);
+
   return (
     <AppContext.Provider
       value={{
@@ -563,6 +673,10 @@ const AppContextProvider = ({ children }) => {
         submitError,
         toggleDropdown,
         openDropdown,
+        handleSigChangeStaff,
+        handleStaffLoginChange,
+        formDataStaffLogin,
+        loginStaff,
       }}
     >
       {children}

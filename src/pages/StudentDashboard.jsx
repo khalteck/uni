@@ -65,7 +65,7 @@ const StudentDashboard = () => {
             </ul>
           </div>
 
-          <div className="flex gap-2 items-center text-black text-[1.5rem] mb-6">
+          <div className="flex gap-2 items-center text-black text-[1.5rem] mb-6 font-medium">
             <h2>All Documents</h2>
           </div>
 
@@ -96,7 +96,7 @@ const StudentDashboard = () => {
 
         {paid && (
           <div className="w-full">
-            <div className="flex gap-2 items-center text-black text-[1.5rem] mb-6">
+            <div className="flex gap-2 items-center text-black text-[1.5rem] mb-6 font-medium">
               <h2>Submitted Documents</h2>
             </div>
 
@@ -118,6 +118,64 @@ const StudentDashboard = () => {
           <div className="flex gap-2 items-center text-black text-[1.5rem] mb-6">
             <h2>Submit Documents</h2>
           </div>
+          {/* <form className="w-full lg:max-w-[85%] lg:min-w-[400px]">
+            <label
+              htmlFor="doc_name"
+              className="mb-1 font-medium text-[1.2rem]"
+            >
+              Document Name
+            </label>
+            <div className="flex items-center border-2 py-2 px-3 mt-2 rounded-2xl mb-4">
+              <select
+                className="w-full p-2 outline-none border-none"
+                id="name"
+                onChange={handlesubmitDocChange}
+              >
+                <option value="" hidden>
+                  Select name
+                </option>
+                <option value="School Fees Receipt">School Fees Receipt</option>
+                <option value="Biodata">Biodata</option>
+                <option value="Course Form">Course Form</option>
+              </select>
+            </div>
+            <label
+              htmlFor="document"
+              className="mb-1 font-medium text-[1.2rem]"
+            >
+              Document (PDF only)
+            </label>
+            <div
+              {...getRootProps({
+                className:
+                  "w-full bg-[#006701]/20 mb-4 mt-2 p-3 outline-none rounded-lg",
+              })}
+            >
+              <input {...getInputProps()} />
+              {submitDoc?.file ? (
+                <p className="w-fit mx-auto border border-[#006701] py-1 px-5 rounded-md cursor-pointer">
+                  {submitDoc?.file.name}
+                </p>
+              ) : (
+                <p className="w-fit mx-auto border border-[#006701] py-2 px-5 rounded-md cursor-pointer">
+                  Upload Document
+                </p>
+              )}
+            </div>
+            {submitError && (
+              <div className="w-full p-2 border border-red-400 rounded-lg text-[.85rem] bg-red-400/30 my-4">
+                {submitError}
+              </div>
+            )}{" "}
+            <div className="w-full text-center">
+              <button
+                onClick={(e) => handleSubmitDoc(e)}
+                className="w-1/2 mx-auto border border-[#006701] bg-[#006701]/70 text-white py-2 px-10 rounded-md cursor-pointer"
+              >
+                Submit
+              </button>
+            </div>
+          </form> */}
           {paid ? (
             <form className="w-full lg:max-w-[85%] lg:min-w-[400px]">
               <label
@@ -143,10 +201,10 @@ const StudentDashboard = () => {
                 </select>
               </div>
               <label
-                htmlFor="profile_image"
+                htmlFor="document"
                 className="mb-1 font-medium text-[1.2rem]"
               >
-                Profile image
+                Document (PDF only)
               </label>
               <div
                 {...getRootProps({
@@ -172,7 +230,7 @@ const StudentDashboard = () => {
               )}{" "}
               <div className="w-full text-center">
                 <button
-                  onClick={pay}
+                  onClick={(e) => handleSubmitDoc(e)}
                   className="w-1/2 mx-auto border border-[#006701] bg-[#006701]/70 text-white py-2 px-10 rounded-md cursor-pointer"
                 >
                   Submit
@@ -183,7 +241,7 @@ const StudentDashboard = () => {
             <div className="w-full min-h-[200px] bg-[#006701]/10 border border-[#006701] text-[#006701] rounded-lg flex flex-col gap-5 justify-center items-center">
               <p>Submit document is unavailable...</p>
               <button
-                onClick={(e) => handleSubmitDoc(e)}
+                onClick={pay}
                 className="w-fit mx-auto border border-[#006701] bg-[#006701]/70 text-white py-2 px-10 rounded-md cursor-pointer flex gap-2 items-center justify-center"
               >
                 <img

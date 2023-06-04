@@ -1,10 +1,33 @@
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import Loader from "../components/Loader";
 import { useAppContext } from "../contexts/AppContext";
 import ScrollToTop from "../ScrollToTop";
 
 const StaffLogin = () => {
-  const { loader } = useAppContext();
+  const {
+    loader,
+    regStaffSuccessData,
+    loginSuccess,
+    formDataStaffLogin,
+    validationEror,
+    loginError,
+    setValidationEror,
+    loginStaff,
+    handleStaffLoginChange,
+  } = useAppContext();
+
+  // console.log("formDataStaffLogin", formDataStaffLogin);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (formDataStaffLogin?.staff_number && formDataStaffLogin?.password) {
+      await loginStaff();
+    } else {
+      setValidationEror(true);
+    }
+  };
   return (
     <>
       <Header />
@@ -29,6 +52,21 @@ const StaffLogin = () => {
           </div>
           <div className="flex w-full md:w-[60%] justify-center items-center bg-white">
             <form className="bg-white">
+              {regStaffSuccessData?.bursar_data && (
+                <div className="w-full my-4 text-[#006701]">
+                  <h3>Staff Registered!</h3>
+                  <p>
+                    Staff ID:{" "}
+                    <span className="font-bold">
+                      {regStaffSuccessData?.bursar_data?.matric_no}
+                    </span>
+                  </p>
+                  <p>
+                    Password: <span className="font-bold">Staff Surname</span>{" "}
+                    (Case sensitive)
+                  </p>
+                </div>
+              )}
               <h1 className="text-gray-800 font-bold text-2xl mb-1">
                 Staff Login
               </h1>
@@ -53,8 +91,9 @@ const StaffLogin = () => {
                 <input
                   className="pl-2 outline-none border-none"
                   type="text"
-                  name=""
-                  id=""
+                  id="staff_number"
+                  value={formDataStaffLogin.staff_number}
+                  onChange={handleStaffLoginChange}
                   placeholder="Staff ID"
                 />
               </div>
@@ -74,12 +113,24 @@ const StaffLogin = () => {
                 <input
                   className="pl-2 outline-none border-none"
                   type="password"
-                  name=""
-                  id=""
+                  id="password"
+                  value={formDataStaffLogin.password}
+                  onChange={handleStaffLoginChange}
                   placeholder="Password"
                 />
               </div>
+              {validationEror && (
+                <div className="w-full p-2 border border-red-400 rounded-2xl text-[.85rem] bg-red-400/30 mt-4">
+                  Please fill all fields
+                </div>
+              )}
+              {loginError && (
+                <div className="w-full p-2 border border-red-400 rounded-2xl text-[.85rem] bg-red-400/30 mt-4">
+                  {loginError}
+                </div>
+              )}
               <button
+                onClick={handleSubmit}
                 type="submit"
                 className="block w-full bg-[#fdc901] mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
               >
@@ -96,6 +147,17 @@ const StaffLogin = () => {
         </div>{" "}
       </div>
       <ScrollToTop />
+
+      {loginSuccess && (
+        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/60 p-4 flex justify-center items-center z-40">
+          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale">
+            <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">
+              Staff Login Successfull
+            </h2>
+            <p className="text-[#006701] font-medium">Redirecting...</p>
+          </div>
+        </div>
+      )}
     </>
   );
 };

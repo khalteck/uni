@@ -1,13 +1,10 @@
 import { useState } from "react";
-import DocRaw from "../components/DocRaw";
-import DocumentCard from "../components/DocumentCard";
 import HeaderDashboard from "../components/HeaderDashboard";
 import LeftSidebar from "../components/LeftSidebar";
 import { useAppContext } from "../contexts/AppContext";
 
 const StudentPayment = () => {
-  const { userData, getRootProps, getInputProps, submittedDocs } =
-    useAppContext();
+  const { userData } = useAppContext();
 
   const user = userData?.student_data;
   console.log(user);
@@ -18,7 +15,7 @@ const StudentPayment = () => {
       <div className="w-full min-h-screen px-5 sm:pl-[230px] lg:pl-[280px] sm:pr-[30px] lg:pr-[330px] py-[80px] sm:py-[110px] bg-white flex flex-col gap-6 md:gap-12">
         {/* Heading */}
         <div className="w-full">
-          <div className="flex gap-2 items-center text-black text-[1.5rem]">
+          <div className="flex gap-2 items-center text-black text-[1.5rem] font-medium">
             <h2>Payment</h2>
           </div>
         </div>
