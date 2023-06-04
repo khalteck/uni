@@ -304,7 +304,7 @@ const AppContextProvider = ({ children }) => {
           "https://student-management-system-production-54cf.up.railway.app/api/conn/all/bursar"
         );
         const data = await response?.json();
-        console.log("bursars list", data);
+        // console.log("bursars list", data);
         setBursarsList(await data?.bursars);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -589,11 +589,11 @@ const AppContextProvider = ({ children }) => {
   };
 
   // to get all docs submitted to this bursar
-  const [docSubmitted, setDocSubmitted] = useState([]);
+  const [docsReceived, setDocsReceived] = useState([]);
 
   useEffect(() => {
     if (userData?.bursar_data) {
-      const getDocSubmitted = async () => {
+      const getDocsReceived = async () => {
         setLoader(true);
         try {
           const token = userData?.token;
@@ -606,8 +606,8 @@ const AppContextProvider = ({ children }) => {
             }
           );
           const data = await response?.json();
-          console.log("docs submitted", data);
-          // setDocSubmitted(data);
+          // console.log("docs submitted", data);
+          setDocsReceived(data);
         } catch (error) {
           console.error("Error fetching data:", error);
         } finally {
@@ -615,7 +615,7 @@ const AppContextProvider = ({ children }) => {
         }
       };
 
-      getDocSubmitted();
+      getDocsReceived();
     }
   }, [userData]);
 
@@ -677,6 +677,7 @@ const AppContextProvider = ({ children }) => {
         handleStaffLoginChange,
         formDataStaffLogin,
         loginStaff,
+        docsReceived,
       }}
     >
       {children}

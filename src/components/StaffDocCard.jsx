@@ -1,10 +1,8 @@
 import { useState } from "react";
 
-const StaffDocCard = () => {
-  const [signed, setSigned] = useState(false);
-
+const StaffDocCard = ({ item }) => {
   return (
-    <div className="min-w-[250px] bg-[#006701]/70 p-3 flex flex-col justify-between rounded-lg text-white cursor-pointer">
+    <div className="min-w-[250px] bg-[#006701]/70 hover:border-[#fdc901] border-2 border-[#006701] p-3 flex flex-col justify-between rounded-lg text-white cursor-pointer">
       <div className="flex gap-3">
         <img
           alt=""
@@ -16,7 +14,7 @@ const StaffDocCard = () => {
             Submitted by: <span className="font-medium">Funmi adams</span>
           </p>
           <p className="w-full text-[.85rem]">
-            Document: <span className="font-medium">Course Form</span>
+            Document: <span className="font-medium">{item?.name}</span>
           </p>
           <div className={`mb-auto text-[.85rem]`}>
             <p>Date: 21-12-2023</p>

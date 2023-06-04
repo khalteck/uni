@@ -9,9 +9,9 @@ import StaffDocCard from "../components/StaffDocCard";
 import { useAppContext } from "../contexts/AppContext";
 
 const StaffDashboard = () => {
-  const { loader, studentsList, submittedDocs, userData } = useAppContext();
+  const { loader, studentsList, docsReceived, userData } = useAppContext();
   const user = userData?.bursar_data;
-  // console.log("studentsList", studentsList);
+  // console.log("docsReceived", docsReceived);
 
   //to handle registrations table pagination
   const [allStudentsPag, setallStudentsPag] = useState([]);
@@ -64,11 +64,11 @@ const StaffDashboard = () => {
           </div>
           <p className="mb-3">
             Welcome to your dashboard {user?.first_name}, <br /> you have{" "}
-            {submittedDocs?.length} submitted documents pending review...{" "}
+            {docsReceived?.length} submitted documents pending review...{" "}
           </p>
-          {submittedDocs?.length > 0 ? (
+          {docsReceived?.length > 0 ? (
             <div className="w-full lg:min-w-[85%] grid grid-flow-row-dense gap-5 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-[#006701]/70 p-3 rounded-lg">
-              {submittedDocs?.map((item, index) => {
+              {docsReceived?.map((item, index) => {
                 return <StaffDocCard item={item} key={index} />;
               })}
             </div>
@@ -77,7 +77,7 @@ const StaffDashboard = () => {
               No submitted documents yet...
             </div>
           )}
-          {submittedDocs?.length > 0 && (
+          {docsReceived?.length > 0 && (
             <button
               // onClick={pay}
               className="w-fit mx-auto mt-8 border border-[#006701] bg-[#006701]/70 hover:bg-[#006701]/50 text-white py-2 px-10 rounded-md cursor-pointer flex gap-2 items-center justify-center"

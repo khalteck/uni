@@ -1,13 +1,12 @@
-import { useState } from "react";
 import HeaderDashboard from "../components/HeaderDashboard";
 import LeftSidebar from "../components/LeftSidebar";
+import StaffDocSign from "../components/StaffDocSign";
 import { useAppContext } from "../contexts/AppContext";
 
 const StaffReview = () => {
-  const { userData, submittedDocs } = useAppContext();
+  const { userData, docsReceived } = useAppContext();
 
   const user = userData?.bursar_data;
-  console.log(user);
   return (
     <>
       <LeftSidebar />
@@ -24,12 +23,12 @@ const StaffReview = () => {
           <p className="mb-3">
             Welcome to your review page {user?.first_name}, <br /> Here you can
             review and stamp/sign submitted documents.. <br /> you have{" "}
-            {submittedDocs?.length} submitted documents pending review...{" "}
+            {docsReceived?.length} submitted documents pending review...{" "}
           </p>
-          {submittedDocs?.length > 0 ? (
+          {docsReceived?.length > 0 ? (
             <div className="w-full lg:min-w-[85%] grid grid-flow-row-dense gap-5 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-[#006701]/70 p-3 rounded-lg">
-              {submittedDocs?.map((item, index) => {
-                return <StaffDocCard item={item} key={index} />;
+              {docsReceived?.map((item, index) => {
+                return <StaffDocSign item={item} key={index} />;
               })}
             </div>
           ) : (
