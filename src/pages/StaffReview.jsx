@@ -4,7 +4,9 @@ import StaffDocSign from "../components/StaffDocSign";
 import { useAppContext } from "../contexts/AppContext";
 
 const StaffReview = () => {
-  const { userData, docsReceived } = useAppContext();
+  const { userData, docsReceived, bursarSgnature } = useAppContext();
+  console.log("bursarSgnature", bursarSgnature);
+  console.log("docsReceived", docsReceived);
 
   const user = userData?.bursar_data;
   return (
@@ -22,8 +24,9 @@ const StaffReview = () => {
         <div className="w-full">
           <p className="mb-3">
             Welcome to your review page {user?.first_name}, <br /> Here you can
-            review and stamp/sign submitted documents.. <br /> you have{" "}
-            {docsReceived?.length} submitted documents pending review...{" "}
+            review and stamp/sign submitted documents.. <br />
+            <br /> you have {docsReceived?.length} submitted documents pending
+            review...{" "}
           </p>
           {docsReceived?.length > 0 ? (
             <div className="w-full lg:min-w-[85%] grid grid-flow-row-dense gap-5 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-[#006701]/70 p-3 rounded-lg">

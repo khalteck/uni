@@ -619,6 +619,37 @@ const AppContextProvider = ({ children }) => {
     }
   }, [userData]);
 
+  // to get bursar signature
+  const [bursarSgnature, setBursarSgnature] = useState([]);
+
+  useEffect(() => {
+    if (userData?.bursar_data) {
+      const getBursarSgnature = async () => {
+        setLoader(true);
+        try {
+          const token = userData?.token;
+          const response = await fetch(
+            "https://student-management-system-production-54cf.up.railway.app/api/conn/my-signature",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const data = await response?.json();
+          // console.log("bursar signature", data);
+          setBursarSgnature(data?.signature);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoader(false);
+        }
+      };
+
+      getBursarSgnature();
+    }
+  }, [userData]);
+
   return (
     <AppContext.Provider
       value={{
@@ -678,6 +709,7 @@ const AppContextProvider = ({ children }) => {
         formDataStaffLogin,
         loginStaff,
         docsReceived,
+        bursarSgnature,
       }}
     >
       {children}
