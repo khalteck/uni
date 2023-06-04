@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
+import { useNavigate } from "react-router-dom";
 import DocumentCard from "../components/DocumentCard";
 import HeaderDashboard from "../components/HeaderDashboard";
 import LeftSidebar from "../components/LeftSidebar";
@@ -12,6 +13,7 @@ const StaffDashboard = () => {
   const { loader, studentsList, docsReceived, userData } = useAppContext();
   const user = userData?.bursar_data;
   // console.log("docsReceived", docsReceived);
+  const navigate = useNavigate();
 
   //to handle registrations table pagination
   const [allStudentsPag, setallStudentsPag] = useState([]);
@@ -79,7 +81,7 @@ const StaffDashboard = () => {
           )}
           {docsReceived?.length > 0 && (
             <button
-              // onClick={pay}
+              onClick={() => navigate("/staff-review")}
               className="w-fit mx-auto mt-8 border border-[#006701] bg-[#006701]/70 hover:bg-[#006701]/50 text-white py-2 px-10 rounded-md cursor-pointer flex gap-2 items-center justify-center"
             >
               Take Action

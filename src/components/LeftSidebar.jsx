@@ -26,7 +26,8 @@ const LeftSidebar = () => {
           <div className="mt-16">
             <div
               className={`flex gap-2 items-center cursor-pointer hover:bg-[#fdc901]/60 bg-[#fdc901]/30 p-2 rounded-md transition-all duration-300 ${
-                currentPage === "/student-dashboard" &&
+                (currentPage === "/student-dashboard" ||
+                  currentPage === "/staff-dashboard") &&
                 "border border-[#fdc901]"
               }`}
             >
@@ -47,7 +48,9 @@ const LeftSidebar = () => {
           <div className="mt-4">
             <div
               className={`flex gap-2 items-center cursor-pointer hover:bg-[#fdc901]/60 bg-[#fdc901]/30 p-2 rounded-md transition-all duration-300 ${
-                currentPage === "/student-payment" && "border border-[#fdc901]"
+                (currentPage === "/student-payment" ||
+                  currentPage === "/staff-review") &&
+                "border border-[#fdc901]"
               }`}
             >
               <img
@@ -110,7 +113,8 @@ const LeftSidebar = () => {
             <div className="mt-16">
               <div
                 className={`flex gap-2 items-center cursor-pointer hover:bg-[#fdc901]/60 bg-[#fdc901]/30 p-2 rounded-md transition-all duration-300 ${
-                  currentPage === "/student-dashboard" &&
+                  (currentPage === "/student-dashboard" ||
+                    currentPage === "/staff-dashboard") &&
                   "border border-[#fdc901]"
                 }`}
               >
@@ -132,7 +136,8 @@ const LeftSidebar = () => {
             <div className="mt-4">
               <div
                 className={`flex gap-2 items-center cursor-pointer hover:bg-[#fdc901]/60 bg-[#fdc901]/30 p-2 rounded-md transition-all duration-300 ${
-                  currentPage === "/student-payment" &&
+                  (currentPage === "/student-payment" ||
+                    currentPage === "/staff-review") &&
                   "border border-[#fdc901]"
                 }`}
               >
