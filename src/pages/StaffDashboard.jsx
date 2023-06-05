@@ -12,7 +12,7 @@ import { useAppContext } from "../contexts/AppContext";
 const StaffDashboard = () => {
   const { loader, studentsList, docsReceived, userData } = useAppContext();
   const user = userData?.bursar_data;
-  // console.log("docsReceived", docsReceived);
+  console.log("docsReceived", docsReceived);
   const navigate = useNavigate();
 
   //to handle registrations table pagination

@@ -5,8 +5,8 @@ import { useAppContext } from "../contexts/AppContext";
 
 const StaffReview = () => {
   const { userData, docsReceived, bursarSgnature } = useAppContext();
-  console.log("bursarSgnature", bursarSgnature);
-  console.log("docsReceived", docsReceived);
+  // console.log("bursarSgnature", bursarSgnature);
+  // console.log("docsReceived", docsReceived);
 
   const user = userData?.bursar_data;
   return (
