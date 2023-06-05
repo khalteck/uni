@@ -21,7 +21,8 @@ const StaffDocCard = ({ item }) => {
           />
           <div>
             <p className="w-full text-[.85rem]">
-              Submitted by: <span className="font-medium">Funmi adams</span>
+              Submitted by:{" "}
+              <span className="font-medium">{item?.submitted_by}</span>
             </p>
             <p className="w-full text-[.85rem]">
               Document: <span className="font-medium">{item?.name}</span>
@@ -58,7 +59,7 @@ const StaffDocCard = ({ item }) => {
               />
             </div>
             <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">
-              Funmi Adams' {item?.name}
+              {item?.submitted_by}'s {item?.name}
             </h2>
             <div className="border border-green-600 w-full h-full mt-2">
               <FileDisplay filePath={item?.file} />

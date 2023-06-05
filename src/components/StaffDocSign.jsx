@@ -1,8 +1,8 @@
 import { useState } from "react";
 import FileDisplay from "./FileDisplay";
+import PdfViewer from "./PdfViewer";
 
 const StaffDocSign = ({ item }) => {
-  console.log(item);
   const [signMod, setSignMod] = useState(false);
   function toggleMod() {
     setSignMod((prev) => !prev);
@@ -26,7 +26,7 @@ const StaffDocSign = ({ item }) => {
           />
           <div>
             <p className="w-full text-[.85rem]">
-              Student: <span className="font-medium">Funmi adams</span>
+              Student: <span className="font-medium">{item?.submitted_by}</span>
             </p>
             <p className="w-full text-[.85rem]">
               Doc: <span className="font-medium">{item?.name}</span>
@@ -58,7 +58,7 @@ const StaffDocSign = ({ item }) => {
               />
             </div>
             <h2 className="text-[1rem] lg:text-[1.5rem]">
-              Sign Funmi Adams' {item?.name}?
+              Sign {item?.submitted_by}'s {item?.name}?
             </h2>
             <button
               // onClick={toggleMod}
@@ -84,10 +84,11 @@ const StaffDocSign = ({ item }) => {
               />
             </div>
             <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">
-              Funmi Adams' {item?.name}
+              {item?.submitted_by}'s {item?.name}
             </h2>
             <div className="border border-green-600 w-full h-full mt-2">
-              <FileDisplay filePath={item?.file} />
+              <PdfViewer fileUrl={item?.file} />
+              {/* <FileDisplay filePath={item?.file} /> */}
             </div>
           </div>
         </div>
