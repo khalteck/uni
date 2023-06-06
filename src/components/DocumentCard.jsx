@@ -1,7 +1,9 @@
 import { useState } from "react";
+import BiodataCard from "./BiodataCard";
 import FileDisplay from "./FileDisplay";
+import ReceiptCard from "./ReceiptCard";
 
-const DocumentCard = ({ item }) => {
+const DocumentCard = ({ item, user }) => {
   const date = item?.date_submitted?.slice(0, 10);
 
   const [viewFile, setViewFile] = useState(false);
@@ -40,8 +42,8 @@ const DocumentCard = ({ item }) => {
         </div>
       </div>
       {viewFile && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/60 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] h-[600px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale relative">
+        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/60 px-4 py-[100px] flex justify-center items-start z-40">
+          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] px-5 py-8 scale relative">
             <div
               onClick={toggleView}
               className="absolute top-3 right-3 bg-[#006701]/80 rounded-full cursor-pointer"
@@ -52,11 +54,21 @@ const DocumentCard = ({ item }) => {
                 className="w-7 h-7"
               />
             </div>
-            <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">
-              {item?.submitted_by}'s {item?.name}
-            </h2>
-            <div className="border border-green-600 w-full h-full mt-2">
-              <FileDisplay filePath={item?.file} />
+            {!user && (
+              <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">
+                {item?.submitted_by}'s {item?.name}
+              </h2>
+            )}
+            <div className="w-full mt-2">
+              <div className="w-full mt-2">
+                {item?.name === "School Fees Receipt" ? (
+                  <ReceiptCard />
+                ) : (
+                  <BiodataCard />
+                )}
+                {/* <FileDisplay filePath={item?.file} /> */}
+              </div>
+              {/* <FileDisplay filePath={item?.file} /> */}
             </div>
           </div>
         </div>

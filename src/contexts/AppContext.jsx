@@ -1,7 +1,9 @@
 import Compressor from "compressorjs";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useLocation, useNavigate } from "react-router-dom";
+import { db } from "../firebase/firebase-config";
 
 export const AppContext = createContext();
 
@@ -194,6 +196,7 @@ const AppContextProvider = ({ children }) => {
         setTimeout(() => {
           setLoginSuccess(false);
           navigate("/student-dashboard");
+          window.location.reload();
         }, 3000);
       } else {
         setLoginError(data?.message);
@@ -224,7 +227,7 @@ const AppContextProvider = ({ children }) => {
           const data = await response.json();
 
           if (response?.ok) {
-            console.log("docs data", data);
+            // console.log("docs data", data);
             setSubmittedDocs(data);
           } else {
             console.log("failed to get submitted docs");
@@ -262,38 +265,6 @@ const AppContextProvider = ({ children }) => {
     getstudentsList();
   }, [userData]);
 
-  // to get all students in a department
-  // const [deptStudentsList, setDeptStudentsList] = useState([]);
-  // // console.log("students list => ", deptStudentsList);
-
-  // useEffect(() => {
-  //   if (userData?.bursar_data) {
-  //     const getdeptStudentsList = async () => {
-  //       setLoader(true);
-  //       try {
-  //         const token = userData?.token;
-  //         const response = await fetch(
-  //           "https://student-management-system-production-54cf.up.railway.app/api/conn/my/students",
-  //           {
-  //             headers: {
-  //               Authorization: `Bearer ${token}`,
-  //             },
-  //           }
-  //         );
-  //         const data = await response?.json();
-  //         console.log("dept student", data);
-  //         // setDeptStudentsList(data);
-  //       } catch (error) {
-  //         console.error("Error fetching data:", error);
-  //       } finally {
-  //         setLoader(false);
-  //       }
-  //     };
-
-  //     getdeptStudentsList();
-  //   }
-  // }, [userData]);
-
   //to get all bursars
   const [bursarsList, setBursarsList] = useState([]);
   useEffect(() => {
@@ -317,7 +288,8 @@ const AppContextProvider = ({ children }) => {
   }, []);
 
   //to get student biodata
-  const [studentBio, setstudentBio] = useState([]);
+  const [studentBio, setstudentBio] = useState({});
+  // console.log("studentBio", studentBio);
   useEffect(() => {
     if (userData?.student_data) {
       const getstudentBio = async () => {
@@ -329,7 +301,7 @@ const AppContextProvider = ({ children }) => {
           const data = await response?.json();
           if (response?.ok) {
             // console.log("my biodata", data);
-            setstudentBio(await data?.student_data);
+            setstudentBio(await data?.biodata);
           }
         } catch (error) {
           console.error("Error fetching data:", error);
@@ -650,6 +622,131 @@ const AppContextProvider = ({ children }) => {
     }
   }, [userData]);
 
+  //========================================================to handle payment
+  const [paid, setPaid] = useState(
+    JSON.parse(localStorage.getItem("paid")) || false
+  );
+
+  const [receipt, setReceipt] = useState({});
+
+  useEffect(() => {
+    if (paid) {
+      const getReceipt = async () => {
+        setLoader(true);
+        try {
+          const matric = userData?.student_data?.matric_no?.replace(/\//g, "-");
+          const docSnap = await getDoc(doc(db, "receipts", `${matric}`));
+          const data = docSnap?.data();
+          setReceipt(data);
+        } catch (error) {
+          console.error("Error fetching receipt:", error);
+        } finally {
+          setLoader(false);
+        }
+      };
+
+      getReceipt();
+    }
+  }, [paid]);
+
+  const [bioData, setBioData] = useState({});
+
+  useEffect(() => {
+    if (paid) {
+      const getBiodata = async () => {
+        setLoader(true);
+        try {
+          const matric = userData?.student_data?.matric_no?.replace(/\//g, "-");
+          const docSnap = await getDoc(doc(db, "biodata", `${matric}`));
+          const data = docSnap?.data();
+          setBioData(data);
+        } catch (error) {
+          console.error("Error fetching receipt:", error);
+        } finally {
+          setLoader(false);
+        }
+      };
+
+      getBiodata();
+    }
+  }, [paid]);
+
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, "0");
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
+  const year = today.getFullYear();
+  const formattedDate = `${day}-${month}-${year}`;
+
+  const validatePayment = async (transaction) => {
+    if (transaction) {
+      try {
+        const formDataToSend = new URLSearchParams();
+        formDataToSend.append("status", "Successful");
+        formDataToSend.append("amount_paid", "20000");
+        formDataToSend.append("transaction_reference", transaction?.reference);
+
+        const response = await fetch(
+          `https://student-management-system-production-54cf.up.railway.app/api/conn/validate_payment`,
+          {
+            method: "POST",
+            body: formDataToSend,
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              Authorization: `Bearer ${userData?.token}`,
+            },
+          }
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log("payment validated", data);
+        } else {
+          console.log("failed to validate payment", data);
+          throw new Error("Server error.");
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoader(false);
+      }
+    }
+  };
+
+  async function createDocs(transaction) {
+    setLoader(true);
+    const newReceipt = {
+      name:
+        userData?.student_data?.first_name +
+        " " +
+        userData?.student_data?.last_name,
+      matric: userData?.student_data?.matric_no,
+      email: userData?.student_data?.email,
+      department: userData?.student_data?.department,
+      status: "Successful",
+      amount: "20000",
+      date: formattedDate,
+      txref: transaction?.reference,
+    };
+    setReceipt(newReceipt);
+
+    setBioData(studentBio);
+
+    const matric = userData?.student_data?.matric_no?.replace(/\//g, "-");
+
+    // update firestore
+    await setDoc(doc(db, "receipts", `${matric}`), {
+      ...newReceipt,
+    });
+
+    await setDoc(doc(db, "biodata", `${matric}`), {
+      ...studentBio,
+    });
+
+    await validatePayment(transaction);
+
+    setLoader(false);
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -710,6 +807,12 @@ const AppContextProvider = ({ children }) => {
         loginStaff,
         docsReceived,
         bursarSgnature,
+        paid,
+        setPaid,
+        receipt,
+        bioData,
+        createDocs,
+        studentBio,
       }}
     >
       {children}

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DocRaw from "../components/DocRaw";
@@ -20,11 +21,21 @@ const StudentDashboard = () => {
     submitError,
     loader,
     userData,
+    paid,
+    receipt,
+    bioData,
   } = useAppContext();
   // console.log(userData);
 
   const user = userData?.student_data;
-  const paid = user?.is_paid;
+  // const paid = user?.is_paid;
+
+  const [allDocs, setAllDocs] = useState([]);
+  useEffect(() => {
+    if (paid) {
+      setAllDocs(["Receipt", "Biodata"]);
+    }
+  }, [paid]);
 
   const navigate = useNavigate();
   function pay() {
@@ -72,9 +83,16 @@ const StudentDashboard = () => {
           {/* Event container */}
           {paid ? (
             <div className="w-full lg:max-w-[85%] lg:min-w-[500px] grid grid-flow-row-dense gap-5 sm:gap-8 grid-cols-1 md:grid-cols-2">
-              <DocRaw />
-              <DocRaw />
-              <DocRaw />
+              {allDocs?.map((item, index) => {
+                return (
+                  <DocRaw
+                    item={item}
+                    key={index}
+                    // receipt={receipt}
+                    // bioData={bioData}
+                  />
+                );
+              })}
             </div>
           ) : (
             <div className="w-full min-h-[200px] bg-[#006701]/10 border border-[#006701] text-[#006701] rounded-lg flex flex-col gap-5 justify-center items-center">
@@ -104,7 +122,7 @@ const StudentDashboard = () => {
             {submittedDocs?.length > 0 ? (
               <div className="w-full lg:max-w-[85%] lg:min-w-[500px] grid grid-flow-row-dense gap-5 sm:gap-8 grid-cols-1 md:grid-cols-2">
                 {submittedDocs?.map((item, index) => {
-                  return <DocumentCard key={index} item={item} />;
+                  return <DocumentCard key={index} item={item} user={user} />;
                 })}
               </div>
             ) : (
@@ -118,64 +136,62 @@ const StudentDashboard = () => {
           <div className="flex gap-2 items-center text-black text-[1.5rem] mb-6">
             <h2>Submit Documents</h2>
           </div>
-          {/* <form className="w-full lg:max-w-[85%] lg:min-w-[400px]">
-            <label
-              htmlFor="doc_name"
-              className="mb-1 font-medium text-[1.2rem]"
-            >
-              Document Name
-            </label>
-            <div className="flex items-center border-2 py-2 px-3 mt-2 rounded-2xl mb-4">
-              <select
-                className="w-full p-2 outline-none border-none"
-                id="name"
-                onChange={handlesubmitDocChange}
-              >
-                <option value="" hidden>
-                  Select name
-                </option>
-                <option value="School Fees Receipt">School Fees Receipt</option>
-                <option value="Biodata">Biodata</option>
-                <option value="Course Form">Course Form</option>
-              </select>
-            </div>
-            <label
-              htmlFor="document"
-              className="mb-1 font-medium text-[1.2rem]"
-            >
-              Document (PDF only)
-            </label>
-            <div
-              {...getRootProps({
-                className:
-                  "w-full bg-[#006701]/20 mb-4 mt-2 p-3 outline-none rounded-lg",
-              })}
-            >
-              <input {...getInputProps()} />
-              {submitDoc?.file ? (
-                <p className="w-fit mx-auto border border-[#006701] py-1 px-5 rounded-md cursor-pointer">
-                  {submitDoc?.file.name}
-                </p>
-              ) : (
-                <p className="w-fit mx-auto border border-[#006701] py-2 px-5 rounded-md cursor-pointer">
-                  Upload Document
-                </p>
-              )}
-            </div>
-            {submitError && (
-              <div className="w-full p-2 border border-red-400 rounded-lg text-[.85rem] bg-red-400/30 my-4">
-                {submitError}
+          {/* <div className="w-full min-h-[550px] bg-[#006701]/10 p-4 border border-[#006701] text-[#006701] rounded-lg flex flex-col gap-5">
+              <div className="w-full bg-[#006701]/50 rounded-lg text-center py-5 relative">
+                <img
+                  alt=""
+                  src="/images/logo2.png"
+                  className="w-10 h-10 absolute top-3 left-2"
+                />
+                <span className="font-bold text-[1.2rem] text-white">
+                  {receipt?.name}- [{receipt?.matric}]
+                </span>
               </div>
-            )}{" "}
-            <div className="w-full text-center">
-              <button
-                onClick={(e) => handleSubmitDoc(e)}
-                className="w-1/2 mx-auto border border-[#006701] bg-[#006701]/70 text-white py-2 px-10 rounded-md cursor-pointer"
-              >
-                Submit
-              </button>
-            </div>
-          </form> */}
+              <div className="w-fullrounded-lg flex flex-col gap-3 border border-[#006701] p-4 rounded-lg mb-auto">
+                <p>
+                  Email:{" "}
+                  <span className="font-bold text-[1rem]">
+                    test@gmail.com
+                  </span>
+                </p>
+                <p>
+                  Department:{" "}
+                  <span className="font-bold text-[1rem]">
+                    {receipt?.department}
+                  </span>
+                </p>
+                <p>
+                  Payment Status:{" "}
+                  <span className="font-bold text-[1rem]">
+                    {receipt?.status}
+                  </span>
+                </p>
+                <p>
+                  Total amount paid:{" "}
+                  <span className="font-bold text-[1rem]">
+                    NGN {receipt?.amount}
+                  </span>
+                </p>
+                <p>
+                  Payment date:{" "}
+                  <span className="font-bold text-[1rem]">{receipt?.date}</span>
+                </p>
+                <p>
+                  Transaction Ref:{" "}
+                  <span className="font-bold text-[1rem]">
+                    {receipt?.txref}
+                  </span>
+                </p>
+              </div>
+              <div className="w-full bg-[#006701]/50 rounded-lg text-center py-5">
+                <span className="font-bold text-[1.2rem] text-white">
+                  School Fees Paid -{" "}
+                  <span className="font-bold text-[1.5rem]">
+                    NGN {receipt?.amount}
+                  </span>
+                </span>
+              </div>
+            </div> */}
           {paid ? (
             <form className="w-full lg:max-w-[85%] lg:min-w-[400px]">
               <label
