@@ -5,12 +5,13 @@ import { useAppContext } from "../contexts/AppContext";
 import { usePaystackPayment } from "react-paystack";
 import ReceiptCard from "../components/ReceiptCard";
 import Loader from "../components/Loader";
+import html2pdf from "html2pdf.js";
 
 const StudentPayment = () => {
   const {
     userData,
-    paid,
-    setPaid,
+    // paid,
+    // setPaid,
     createDocs,
     receipt,
     bioData,
@@ -18,18 +19,32 @@ const StudentPayment = () => {
     studentBio,
   } = useAppContext();
 
-  console.log("receipt", receipt);
+  // console.log("receipt", receipt);
   // console.log("bioData", bioData);
 
-  console.log("studentBio", studentBio);
+  // console.log("studentBio", studentBio);
 
   const user = userData?.student_data;
+  const paid = user?.is_paid;
 
   const [payMod, setPayMod] = useState(false);
   function toggleMod() {
     setPayMod((prev) => !prev);
   }
   const price = "20000";
+
+  const convertToPdfAndDownload = () => {
+    const element = document.getElementById("receipt");
+    const opt = {
+      margin: 1,
+      filename: `receipt.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    };
+
+    html2pdf().set(opt).from(element).save();
+  };
 
   //==================================== to handle payment
   // paystack integration
@@ -45,9 +60,9 @@ const StudentPayment = () => {
 
   //paystack functions
   const onSuccess = (transaction) => {
-    console.log(transaction);
-    setPaid(true);
-    localStorage.setItem("paid", JSON.stringify(true));
+    console.log("payment success", transaction);
+    // setPaid(true);
+    // localStorage.setItem("paid", JSON.stringify(true));
     setPayMod(false);
     if (transaction) {
       createDocs(transaction);
@@ -123,10 +138,12 @@ const StudentPayment = () => {
               <p>You have paid your school fees!</p>
             </div>
 
-            <ReceiptCard />
+            <div id="receipt">
+              <ReceiptCard />
+            </div>
 
             <button
-              // onClick={toggleMod}
+              onClick={convertToPdfAndDownload}
               className="w-fit mx-auto mt-5 border border-[#006701] bg-[#006701]/70 text-white py-2 px-10 rounded-md cursor-pointer flex gap-2 items-center justify-center"
             >
               <img

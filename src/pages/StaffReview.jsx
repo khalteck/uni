@@ -4,7 +4,8 @@ import StaffDocSign from "../components/StaffDocSign";
 import { useAppContext } from "../contexts/AppContext";
 
 const StaffReview = () => {
-  const { userData, docsReceived, bursarSgnature } = useAppContext();
+  const { userData, docsReceived, bursarSgnature, docsFromFirestore } =
+    useAppContext();
   // console.log("bursarSgnature", bursarSgnature);
   // console.log("docsReceived", docsReceived);
 
@@ -13,7 +14,7 @@ const StaffReview = () => {
     <>
       <LeftSidebar />
       <HeaderDashboard />
-      <div className="w-full min-h-screen px-5 sm:pl-[230px] lg:pl-[280px] sm:pr-[30px] lg:pr-[330px] py-[80px] sm:py-[110px] bg-white flex flex-col gap-6 md:gap-12">
+      <div className="w-full min-h-screen px-5 sm:pl-[230px] lg:pl-[280px] sm:pr-[30px] py-[80px] sm:py-[110px] bg-white flex flex-col gap-10">
         {/* Heading */}
         <div className="w-full">
           <div className="flex gap-2 items-center text-black text-[1.5rem] font-medium">
@@ -31,7 +32,13 @@ const StaffReview = () => {
           {docsReceived?.length > 0 ? (
             <div className="w-full lg:min-w-[85%] grid grid-flow-row-dense gap-5 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-[#006701]/70 p-3 rounded-lg">
               {docsReceived?.map((item, index) => {
-                return <StaffDocSign item={item} key={index} />;
+                return (
+                  <StaffDocSign
+                    item={item}
+                    key={index}
+                    docsFromFirestore={docsFromFirestore}
+                  />
+                );
               })}
             </div>
           ) : (

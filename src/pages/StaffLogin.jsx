@@ -28,6 +28,8 @@ const StaffLogin = () => {
       setValidationEror(true);
     }
   };
+
+  // console.log(regStaffSuccessData);
   return (
     <>
       <Header />
@@ -58,7 +60,7 @@ const StaffLogin = () => {
                   <p>
                     Staff ID:{" "}
                     <span className="font-bold">
-                      {regStaffSuccessData?.bursar_data?.matric_no}
+                      {regStaffSuccessData?.bursar_data?.staff_number}
                     </span>
                   </p>
                   <p>

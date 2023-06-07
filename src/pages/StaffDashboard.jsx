@@ -10,9 +10,10 @@ import StaffDocCard from "../components/StaffDocCard";
 import { useAppContext } from "../contexts/AppContext";
 
 const StaffDashboard = () => {
-  const { loader, studentsList, docsReceived, userData } = useAppContext();
+  const { loader, studentsList, docsReceived, userData, docsFromFirestore } =
+    useAppContext();
   const user = userData?.bursar_data;
-  console.log("docsReceived", docsReceived);
+  // console.log("docsFromFirestore", docsFromFirestore);
   const navigate = useNavigate();
 
   //to handle registrations table pagination
@@ -71,7 +72,13 @@ const StaffDashboard = () => {
           {docsReceived?.length > 0 ? (
             <div className="w-full lg:min-w-[85%] grid grid-flow-row-dense gap-5 sm:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-[#006701]/70 p-3 rounded-lg">
               {docsReceived?.map((item, index) => {
-                return <StaffDocCard item={item} key={index} />;
+                return (
+                  <StaffDocCard
+                    item={item}
+                    key={index}
+                    docsFromFirestore={docsFromFirestore}
+                  />
+                );
               })}
             </div>
           ) : (

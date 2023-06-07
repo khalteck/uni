@@ -41,7 +41,7 @@ const DocumentCard = ({ item, user }) => {
           )}
         </div>
       </div>
-      {viewFile && (
+      {viewFile && user && (
         <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/60 px-4 py-[100px] flex justify-center items-start z-40">
           <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] px-5 py-8 scale relative">
             <div

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import FileDisplay from "./FileDisplay";
-import PdfViewer from "./PdfViewer";
+import BiodataCardStaff from "./BiodataCardStaff";
+import ReceiptCardStaff from "./ReceiptCardStaff";
 
-const StaffDocSign = ({ item }) => {
+const StaffDocSign = ({ item, docsFromFirestore }) => {
   const [signMod, setSignMod] = useState(false);
   function toggleMod() {
     setSignMod((prev) => !prev);
@@ -12,6 +12,11 @@ const StaffDocSign = ({ item }) => {
   function toggleView() {
     setViewFile((prev) => !prev);
   }
+
+  const currentFile = docsFromFirestore?.filter((file) => {
+    return file?.matric_no === item?.student_matric_no;
+  });
+
   return (
     <div className="flex flex-col gap-2 items-start justify-start">
       <div
@@ -71,8 +76,8 @@ const StaffDocSign = ({ item }) => {
       )}
 
       {viewFile && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/60 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] h-[600px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale relative">
+        <div className="w-full h-screen fixed top-0 left-0 bg-[#006701]/60 px-4 py-[100px] flex justify-center items-start z-40 overflow-y-auto">
+          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale relative">
             <div
               onClick={toggleView}
               className="absolute top-3 right-3 bg-[#006701]/80 rounded-full cursor-pointer"
@@ -86,8 +91,18 @@ const StaffDocSign = ({ item }) => {
             <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">
               {item?.submitted_by}'s {item?.name}
             </h2>
-            <div className="border border-green-600 w-full h-full mt-2">
-              <PdfViewer fileUrl={item?.file} />
+            <div className="w-full mt-2">
+              <div className="w-full mt-2">
+                {item?.name === "School Fees Receipt" ? (
+                  <div>
+                    <ReceiptCardStaff item={item} currentFile={currentFile} />
+                  </div>
+                ) : (
+                  <div>
+                    <BiodataCardStaff item={item} currentFile={currentFile} />
+                  </div>
+                )}
+              </div>
               {/* <FileDisplay filePath={item?.file} /> */}
             </div>
           </div>

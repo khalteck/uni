@@ -1,13 +1,27 @@
 import { useState } from "react";
 import BiodataCard from "./BiodataCard";
-import FileDisplay from "./FileDisplay";
+import html2pdf from "html2pdf.js";
 import ReceiptCard from "./ReceiptCard";
 
-const DocRaw = ({ item }) => {
+const DocRaw = ({ item, user }) => {
   const [viewFile, setViewFile] = useState(false);
   function toggleView() {
     setViewFile((prev) => !prev);
   }
+  const id = item?.toLowerCase();
+
+  const convertToPdfAndDownload = () => {
+    const element = document.getElementById(id);
+    const opt = {
+      margin: 1,
+      filename: `${item}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    };
+
+    html2pdf().set(opt).from(element).save();
+  };
   return (
     <>
       <div
@@ -44,23 +58,28 @@ const DocRaw = ({ item }) => {
             {/* <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">{item}</h2> */}
             <div className="w-full mt-2">
               {item === "Receipt" ? (
-                <ReceiptCard />
+                <div id={id}>
+                  <ReceiptCard />
+                </div>
               ) : item === "Biodata" ? (
-                <BiodataCard />
+                <div id={id}>
+                  <BiodataCard />
+                </div>
               ) : null}
-              {/* <FileDisplay filePath={item?.file} /> */}
             </div>
-            <button
-              // onClick={toggleMod}
-              className="w-fit mx-auto border border-[#006701] bg-[#006701]/70 text-white py-2 px-10 rounded-md cursor-pointer flex gap-2 items-center justify-center"
-            >
-              <img
-                alt="building"
-                src="/images/icons8-download-24.png"
-                className="w-5 h-5"
-              />
-              Download {item}
-            </button>
+            {user && (
+              <button
+                onClick={convertToPdfAndDownload}
+                className="w-fit mx-auto border border-[#006701] bg-[#006701]/70 hover:bg-[#006701]/40 text-white py-2 px-10 rounded-md cursor-pointer flex gap-2 items-center justify-center"
+              >
+                <img
+                  alt="building"
+                  src="/images/icons8-download-24.png"
+                  className="w-5 h-5"
+                />
+                Download {item}
+              </button>
+            )}
           </div>
         </div>
       )}

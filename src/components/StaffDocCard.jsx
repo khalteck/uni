@@ -1,11 +1,19 @@
 import { useState } from "react";
-import FileDisplay from "./FileDisplay";
+import BiodataCardStaff from "./BiodataCardStaff";
+import ReceiptCardStaff from "./ReceiptCardStaff";
 
-const StaffDocCard = ({ item }) => {
+const StaffDocCard = ({ item, docsFromFirestore }) => {
   const [viewFile, setViewFile] = useState(false);
   function toggleView() {
     setViewFile((prev) => !prev);
   }
+
+  const currentFile = docsFromFirestore?.filter((file) => {
+    return file?.matric_no === item?.student_matric_no;
+  });
+
+  // console.log("currentFile", currentFile);
+
   return (
     <>
       {" "}
@@ -32,22 +40,10 @@ const StaffDocCard = ({ item }) => {
             </div>
           </div>
         </div>
-        {/* <div className="w-full flex justify-end items-center mt-4">
-   <img
-     alt=""
-     src="/images/icons8-clock-50.png"
-     className="w-7 h-7 mr-2"
-   />
-   {signed ? (
-     <div className="uppercase text-[1rem] font-bold">Signed</div>
-   ) : (
-     <div className="uppercase text-[1rem] font-bold">Pending review</div>
-   )}
- </div> */}
       </div>
       {viewFile && (
-        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/60 p-4 flex justify-center items-center z-40">
-          <div className="w-full sm:w-[550px] h-[600px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale relative">
+        <div className="w-full h-screen fixed top-0 left-0 bg-[#006701]/60 px-4 py-[100px] flex justify-center items-start z-40 overflow-y-auto">
+          <div className="w-full sm:w-[550px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 scale relative">
             <div
               onClick={toggleView}
               className="absolute top-3 right-3 bg-[#006701]/80 rounded-full cursor-pointer"
@@ -61,8 +57,19 @@ const StaffDocCard = ({ item }) => {
             <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">
               {item?.submitted_by}'s {item?.name}
             </h2>
-            <div className="border border-green-600 w-full h-full mt-2">
-              <FileDisplay filePath={item?.file} />
+            <div className="w-full mt-2">
+              <div className="w-full mt-2">
+                {item?.name === "School Fees Receipt" ? (
+                  <div>
+                    <ReceiptCardStaff item={item} currentFile={currentFile} />
+                  </div>
+                ) : (
+                  <div>
+                    <BiodataCardStaff item={item} currentFile={currentFile} />
+                  </div>
+                )}
+              </div>
+              {/* <FileDisplay filePath={item?.file} /> */}
             </div>
           </div>
         </div>

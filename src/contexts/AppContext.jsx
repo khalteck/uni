@@ -123,7 +123,7 @@ const AppContextProvider = ({ children }) => {
       form.append("email", formDataStudentReg.email);
 
       const response = await fetch(
-        "https://student-management-system-production-54cf.up.railway.app/api/conn/register/student",
+        "https://student-management-system-production-54cf.up.railway.app/api/v1/register/student",
         {
           method: "POST",
           body: form,
@@ -178,7 +178,7 @@ const AppContextProvider = ({ children }) => {
     setLoader(true);
     try {
       const response = await fetch(
-        "https://student-management-system-production-54cf.up.railway.app/api/conn/login/student",
+        "https://student-management-system-production-54cf.up.railway.app/api/v1/login/student",
         {
           method: "POST",
           headers: {
@@ -217,7 +217,7 @@ const AppContextProvider = ({ children }) => {
         setLoader(true);
         try {
           const response = await fetch(
-            "https://student-management-system-production-54cf.up.railway.app/api/conn/all/documents",
+            "https://student-management-system-production-54cf.up.railway.app/api/v1/all/documents",
             {
               headers: {
                 Authorization: `Bearer ${userData?.token}`,
@@ -227,7 +227,7 @@ const AppContextProvider = ({ children }) => {
           const data = await response.json();
 
           if (response?.ok) {
-            // console.log("docs data", data);
+            console.log("docs data", data);
             setSubmittedDocs(data);
           } else {
             console.log("failed to get submitted docs");
@@ -251,7 +251,7 @@ const AppContextProvider = ({ children }) => {
       setLoader(true);
       try {
         const response = await fetch(
-          "https://student-management-system-production-54cf.up.railway.app/api/conn/all/student?page=1"
+          "https://student-management-system-production-54cf.up.railway.app/api/v1/all/student?page=1"
         );
         const data = await response?.json();
         setStudentsList(await data?.student_data);
@@ -272,7 +272,7 @@ const AppContextProvider = ({ children }) => {
       setLoader(true);
       try {
         const response = await fetch(
-          "https://student-management-system-production-54cf.up.railway.app/api/conn/all/bursar"
+          "https://student-management-system-production-54cf.up.railway.app/api/v1/all/bursar"
         );
         const data = await response?.json();
         // console.log("bursars list", data);
@@ -287,6 +287,8 @@ const AppContextProvider = ({ children }) => {
     getbursarsList();
   }, []);
 
+  const [payTrack, setpayTrack] = useState(false);
+
   //to get student biodata
   const [studentBio, setstudentBio] = useState({});
   // console.log("studentBio", studentBio);
@@ -296,11 +298,11 @@ const AppContextProvider = ({ children }) => {
         setLoader(true);
         try {
           const response = await fetch(
-            `https://student-management-system-production-54cf.up.railway.app/api/conn/biodata/${userData?.student_data?.id}`
+            `https://student-management-system-production-54cf.up.railway.app/api/v1/biodata/${userData?.student_data?.id}`
           );
           const data = await response?.json();
           if (response?.ok) {
-            // console.log("my biodata", data);
+            console.log("my biodata", data);
             setstudentBio(await data?.biodata);
           }
         } catch (error) {
@@ -312,7 +314,7 @@ const AppContextProvider = ({ children }) => {
 
       getstudentBio();
     }
-  }, []);
+  }, [payTrack, userData]);
 
   //to register student
   const [formDataStaffReg, setFormDataStaffReg] = useState({
@@ -327,6 +329,8 @@ const AppContextProvider = ({ children }) => {
     email: "",
     staff_signatures: {},
   });
+
+  // console.log("formDataStaffReg", formDataStaffReg);
 
   const handleInputChangeStaff = (e) => {
     const { id, value } = e.target;
@@ -378,7 +382,7 @@ const AppContextProvider = ({ children }) => {
       form.append("staff_signatures", formDataStaffReg.staff_signatures);
 
       const response = await fetch(
-        "https://student-management-system-production-54cf.up.railway.app/api/conn/register/bursar",
+        "https://student-management-system-production-54cf.up.railway.app/api/v1/register/bursar",
         {
           method: "POST",
           body: form,
@@ -433,7 +437,7 @@ const AppContextProvider = ({ children }) => {
     setLoader(true);
     try {
       const response = await fetch(
-        "https://student-management-system-production-54cf.up.railway.app/api/conn/login/bursar",
+        "https://student-management-system-production-54cf.up.railway.app/api/v1/login/bursar",
         {
           method: "POST",
           headers: {
@@ -526,7 +530,7 @@ const AppContextProvider = ({ children }) => {
         formDataToSend.append("file", submitDoc?.file);
 
         const response = await fetch(
-          `https://student-management-system-production-54cf.up.railway.app/api/conn/submit/document/${bursar[0]?.id}`,
+          `https://student-management-system-production-54cf.up.railway.app/api/v1/submit/document/${bursar[0]?.id}`,
           {
             method: "POST",
             body: formDataToSend,
@@ -543,6 +547,7 @@ const AppContextProvider = ({ children }) => {
           setDocSubmitSuccess(true);
           setTimeout(() => {
             setDocSubmitSuccess(false);
+            window.location.reload();
           }, 3000);
         } else {
           console.log("failed to send doc", data);
@@ -551,7 +556,7 @@ const AppContextProvider = ({ children }) => {
         }
       } catch (error) {
         console.error(error);
-        setSubmitError("Bad network connection");
+        setSubmitError("An error occured");
       } finally {
         setLoader(false);
       }
@@ -570,7 +575,7 @@ const AppContextProvider = ({ children }) => {
         try {
           const token = userData?.token;
           const response = await fetch(
-            "https://student-management-system-production-54cf.up.railway.app/api/conn/my/docs",
+            "https://student-management-system-production-54cf.up.railway.app/api/v1/my/docs",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -601,7 +606,7 @@ const AppContextProvider = ({ children }) => {
         try {
           const token = userData?.token;
           const response = await fetch(
-            "https://student-management-system-production-54cf.up.railway.app/api/conn/my-signature",
+            "https://student-management-system-production-54cf.up.railway.app/api/v1/my-signature",
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -623,14 +628,13 @@ const AppContextProvider = ({ children }) => {
   }, [userData]);
 
   //========================================================to handle payment
-  const [paid, setPaid] = useState(
-    JSON.parse(localStorage.getItem("paid")) || false
-  );
-
+  // const [paid, setPaid] = useState(
+  //   JSON.parse(localStorage.getItem("paid")) || false
+  // );
   const [receipt, setReceipt] = useState({});
 
   useEffect(() => {
-    if (paid) {
+    if (userData) {
       const getReceipt = async () => {
         setLoader(true);
         try {
@@ -647,12 +651,12 @@ const AppContextProvider = ({ children }) => {
 
       getReceipt();
     }
-  }, [paid]);
+  }, [userData]);
 
   const [bioData, setBioData] = useState({});
 
   useEffect(() => {
-    if (paid) {
+    if (userData) {
       const getBiodata = async () => {
         setLoader(true);
         try {
@@ -669,7 +673,7 @@ const AppContextProvider = ({ children }) => {
 
       getBiodata();
     }
-  }, [paid]);
+  }, [userData]);
 
   const today = new Date();
   const day = String(today.getDate()).padStart(2, "0");
@@ -686,7 +690,7 @@ const AppContextProvider = ({ children }) => {
         formDataToSend.append("transaction_reference", transaction?.reference);
 
         const response = await fetch(
-          `https://student-management-system-production-54cf.up.railway.app/api/conn/validate_payment`,
+          `https://student-management-system-production-54cf.up.railway.app/api/v1/validate_payment`,
           {
             method: "POST",
             body: formDataToSend,
@@ -712,6 +716,39 @@ const AppContextProvider = ({ children }) => {
     }
   };
 
+  const userCred = {
+    matric_number: userData?.student_data?.matric_no,
+    password: userData?.student_data?.last_name,
+  };
+
+  const loginDetails = async () => {
+    setLoader(true);
+    try {
+      const response = await fetch(
+        "https://student-management-system-production-54cf.up.railway.app/api/v1/login/student",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userCred),
+        }
+      );
+      const data = await response?.json();
+
+      if (response?.ok) {
+        localStorage.setItem("userData", JSON.stringify(await data));
+        setUserData(await data);
+      } else {
+        console.log("could not get login userdata");
+      }
+    } catch (error) {
+      console.error("Error occurred during login:", error);
+    } finally {
+      setLoader(false);
+    }
+  };
+
   async function createDocs(transaction) {
     setLoader(true);
     const newReceipt = {
@@ -719,7 +756,7 @@ const AppContextProvider = ({ children }) => {
         userData?.student_data?.first_name +
         " " +
         userData?.student_data?.last_name,
-      matric: userData?.student_data?.matric_no,
+      matric_no: userData?.student_data?.matric_no,
       email: userData?.student_data?.email,
       department: userData?.student_data?.department,
       status: "Successful",
@@ -743,9 +780,70 @@ const AppContextProvider = ({ children }) => {
     });
 
     await validatePayment(transaction);
+    setpayTrack((prev) => !prev);
+    await loginDetails();
 
     setLoader(false);
   }
+
+  const submittedDocOwners = docsReceived.filter((obj2) =>
+    studentsList.some((obj1) => obj1.matric_no === obj2.student_matric_no)
+  );
+  // console.log("submittedDocOwners", submittedDocOwners);
+
+  const [docsFromFirestore, setDocsFromFirestore] = useState([]);
+
+  const getDataFromFirestore = async (array) => {
+    const documents = [];
+
+    for (const obj of array) {
+      const { student_matric_no, name } = obj;
+
+      let document;
+      if (name === "School Fees Receipt") {
+        document = doc(db, "receipts", student_matric_no?.replace(/\//g, "-"));
+      } else {
+        document = doc(db, "biodata", student_matric_no?.replace(/\//g, "-"));
+      }
+
+      try {
+        const snapshot = await getDoc(document);
+        if (snapshot.exists()) {
+          documents.push(snapshot.data());
+        } else {
+          // Handle case when document does not exist
+          console.log(
+            `Document does not exist for matric no: ${student_matric_no?.replace(
+              /\//g,
+              "-"
+            )}`
+          );
+        }
+      } catch (error) {
+        // Handle error
+        console.log(
+          `Error fetching document for matric no: ${student_matric_no?.replace(
+            /\//g,
+            "-"
+          )}`,
+          error
+        );
+      }
+    }
+
+    return documents;
+  };
+
+  useEffect(() => {
+    getDataFromFirestore(submittedDocOwners)
+      .then((documents) => {
+        // console.log("Documents:", documents);
+        setDocsFromFirestore(documents);
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+      });
+  }, [userData, docsReceived]);
 
   return (
     <AppContext.Provider
@@ -807,8 +905,7 @@ const AppContextProvider = ({ children }) => {
         loginStaff,
         docsReceived,
         bursarSgnature,
-        paid,
-        setPaid,
+        docsFromFirestore,
         receipt,
         bioData,
         createDocs,
