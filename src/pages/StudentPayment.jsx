@@ -50,7 +50,7 @@ const StudentPayment = () => {
   // paystack integration
   const paystackConfig = {
     reference: new Date().getTime().toString(),
-    email: `test@gmail.com`, //user email
+    email: `${user?.email}`, //user email
     amount: `${price}00`, //amount is in Kobo
     publicKey: "pk_test_c9e136db34c0d202081e2efdcb7d5c4d991d3bd6",
   };

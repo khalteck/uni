@@ -2,18 +2,28 @@ import HeaderDashboard from "../components/HeaderDashboard";
 import LeftSidebar from "../components/LeftSidebar";
 import StaffDocSign from "../components/StaffDocSign";
 import { useAppContext } from "../contexts/AppContext";
+import Loader from "../components/Loader";
 
 const StaffReview = () => {
-  const { userData, docsReceived, bursarSgnature, docsFromFirestore } =
-    useAppContext();
-  // console.log("bursarSgnature", bursarSgnature);
-  // console.log("docsReceived", docsReceived);
+  const {
+    userData,
+    docsReceived,
+    handleSignDoc,
+    signSucess,
+    docsFromFirestore,
+    loader,
+  } = useAppContext();
+
+  console.log("docsReceived", docsReceived);
 
   const user = userData?.bursar_data;
   return (
     <>
       <LeftSidebar />
       <HeaderDashboard />
+
+      {loader && <Loader />}
+
       <div className="w-full min-h-screen px-5 sm:pl-[230px] lg:pl-[280px] sm:pr-[30px] py-[80px] sm:py-[110px] bg-white flex flex-col gap-10">
         {/* Heading */}
         <div className="w-full">
@@ -37,6 +47,8 @@ const StaffReview = () => {
                     item={item}
                     key={index}
                     docsFromFirestore={docsFromFirestore}
+                    handleSignDoc={handleSignDoc}
+                    signSucess={signSucess}
                   />
                 );
               })}

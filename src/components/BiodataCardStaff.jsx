@@ -14,7 +14,7 @@ const itemCardStaff = ({ item, currentFile }) => {
         <p className="font-bold text-[1.1rem]">RegisPro</p>
       </div>
       <div className="w-full py-3 relative text-center bg-[#006701]/50 text-white rounded-lg">
-        <span className="font-bold text-[1.4rem]">My item</span>
+        <span className="font-bold text-[1.4rem]">Student Biodata</span>
       </div>
       <div className="w-fullrounded-lg flex flex-col gap-3 rounded-lg mb-auto">
         <p>

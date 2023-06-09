@@ -17,6 +17,8 @@ const StaffReg = () => {
     handleSigChangeStaff,
     handleFileChangeStaff,
     regError,
+    notify,
+    fillInputsAbove,
   } = useAppContext();
 
   const navigate = useNavigate();
@@ -38,7 +40,6 @@ const StaffReg = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formDataStaffReg);
 
     if (
       formDataStaffReg?.first_name &&
@@ -126,6 +127,32 @@ const StaffReg = () => {
                 onChange={handleInputChangeStaff}
                 placeholder="Email"
               />
+              <div className="w-full relative">
+                {!formDataStaffReg.first_name ||
+                !formDataStaffReg.last_name ||
+                !formDataStaffReg.staff_number ? (
+                  <div
+                    onClick={notify}
+                    className="w-full h-full absolute top-0 left-0"
+                  ></div>
+                ) : null}
+                <label htmlFor="staff_signatures" className="mb-1">
+                  Upload Staff Signature
+                  <span className="text-gray-500"> ( Image )</span>
+                </label>
+                <input
+                  id="staff_signatures"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleSigChangeStaff}
+                  className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
+                />
+              </div>
+              {fillInputsAbove && (
+                <p className="text-red-500 mb-2">
+                  Please fill fields above first
+                </p>
+              )}
               <label htmlFor="staff_passport" className="mb-1">
                 Upload Passport<span className="text-gray-500"> ( Image )</span>
               </label>
@@ -169,17 +196,6 @@ const StaffReg = () => {
                 value={formDataStaffReg.address}
                 onChange={handleInputChangeStaff}
                 placeholder="Address"
-              />
-              <label htmlFor="staff_signatures" className="mb-1">
-                Upload Staff Signature
-                <span className="text-gray-500"> ( Image )</span>
-              </label>
-              <input
-                id="staff_signatures"
-                type="file"
-                accept="image/*"
-                onChange={handleSigChangeStaff}
-                className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
               />
 
               {validationEror && (

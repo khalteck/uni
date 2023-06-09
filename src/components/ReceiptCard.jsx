@@ -18,7 +18,7 @@ const ReceiptCard = () => {
         <p>
           Student:{" "}
           <span className="font-bold text-[1rem]">
-            {receipt?.name}- [{receipt?.matric}]
+            {receipt?.name}- [{receipt?.matric_no}]
           </span>
         </p>
         <p>

@@ -1,5 +1,6 @@
 import Compressor from "compressorjs";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -163,7 +164,7 @@ const AppContextProvider = ({ children }) => {
     setLoginError("");
     setFormDataStudentLogin((prevFormDataStudentLogin) => ({
       ...prevFormDataStudentLogin,
-      [id]: value,
+      [id]: value?.replace(/ /g, ""),
     }));
   };
 
@@ -335,6 +336,7 @@ const AppContextProvider = ({ children }) => {
   const handleInputChangeStaff = (e) => {
     const { id, value } = e.target;
     setValidationEror(false);
+    setFillInputsAbove(false);
     setFormDataStaffReg((prevFormDataStaffReg) => ({
       ...prevFormDataStaffReg,
       [id]: value,
@@ -361,6 +363,30 @@ const AppContextProvider = ({ children }) => {
       };
     });
   };
+
+  const [fillInputsAbove, setFillInputsAbove] = useState(false);
+  function notify() {
+    setFillInputsAbove(true);
+  }
+  const storage = getStorage();
+
+  function handleFileUpload(event) {
+    const storageRef = ref(
+      storage,
+      `signatures/${formDataStaffReg.staff_number.replace(/\//g, "-")}`
+    );
+    const file = formDataStaffReg?.staff_signatures;
+    setValidationEror(false);
+
+    // Upload the file to Firebase Storage
+    uploadBytes(storageRef, file)
+      .then((snapshot) => {
+        console.log("Uploaded a file!");
+      })
+      .catch((error) => {
+        console.error("Error uploading file:", error);
+      });
+  }
 
   const [regStaffSuccessData, setRegStaffSuccessData] = useState(
     JSON.parse(localStorage.getItem("loginDetails")) || {}
@@ -391,6 +417,7 @@ const AppContextProvider = ({ children }) => {
       const data = await response?.json();
 
       if (response?.ok) {
+        handleFileUpload();
         console.log("Registration successful");
         localStorage.setItem("loginDetails", JSON.stringify(data));
         setRegStaffSuccessData(await data);
@@ -845,6 +872,78 @@ const AppContextProvider = ({ children }) => {
       });
   }, [userData, docsReceived]);
 
+  const [signature, setSignature] = useState(null);
+
+  useEffect(() => {
+    if (userData?.bursar_data) {
+      const fetchImage = async () => {
+        try {
+          const path = `signatures/${userData?.bursar_data.staff_number.replace(
+            /\//g,
+            "-"
+          )}`;
+
+          const imageRef = ref(storage, path);
+          const downloadURL = await getDownloadURL(imageRef);
+          setSignature(downloadURL);
+        } catch (error) {
+          console.error("Error fetching image:", error);
+        }
+      };
+
+      fetchImage();
+    }
+  }, [userData]);
+
+  //to submit docs
+  const [signSucess, setSignSucess] = useState(false);
+
+  const handleSignDoc = async (doc_id) => {
+    if (signature) {
+      setLoader(true);
+      // const signatureFile = {
+      //   data: signature,
+      //   name: signature,
+      // };
+
+      try {
+        const formDataToSend = new URLSearchParams();
+        formDataToSend.append("signature", signature);
+
+        const response = await fetch(
+          `https://student-management-system-production-54cf.up.railway.app/api/v1/sign_doc/${doc_id}`,
+          {
+            method: "POST",
+            body: formDataToSend,
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+              Authorization: `Bearer ${userData?.token}`,
+            },
+          }
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log("Signed successfully", data);
+          setSignSucess(true);
+          setTimeout(() => {
+            setSignSucess(false);
+            // window.location.reload();
+          }, 3000);
+        } else {
+          console.log("failed to sign doc", data);
+
+          throw new Error("Server error.");
+        }
+      } catch (error) {
+        console.error(error);
+        setSubmitError("An error occured");
+      } finally {
+        setLoader(false);
+      }
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -910,6 +1009,10 @@ const AppContextProvider = ({ children }) => {
         bioData,
         createDocs,
         studentBio,
+        fillInputsAbove,
+        notify,
+        handleSignDoc,
+        signSucess,
       }}
     >
       {children}

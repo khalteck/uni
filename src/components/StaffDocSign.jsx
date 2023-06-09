@@ -2,7 +2,12 @@ import { useState } from "react";
 import BiodataCardStaff from "./BiodataCardStaff";
 import ReceiptCardStaff from "./ReceiptCardStaff";
 
-const StaffDocSign = ({ item, docsFromFirestore }) => {
+const StaffDocSign = ({
+  item,
+  docsFromFirestore,
+  handleSignDoc,
+  signSucess,
+}) => {
   const [signMod, setSignMod] = useState(false);
   function toggleMod() {
     setSignMod((prev) => !prev);
@@ -16,6 +21,8 @@ const StaffDocSign = ({ item, docsFromFirestore }) => {
   const currentFile = docsFromFirestore?.filter((file) => {
     return file?.matric_no === item?.student_matric_no;
   });
+
+  // console.log(item);
 
   return (
     <div className="flex flex-col gap-2 items-start justify-start">
@@ -42,12 +49,14 @@ const StaffDocSign = ({ item, docsFromFirestore }) => {
           </div>
         </div>
       </div>
-      <button
-        onClick={toggleMod}
-        className="w-fit bg-[#006701]/70 hover:opacity-70 border-[#fdc901] border text-white py-1 px-5 text-[.75rem] rounded-md cursor-pointer flex gap-2 items-center justify-center"
-      >
-        Sign
-      </button>
+      {!item?.signed && (
+        <button
+          onClick={toggleMod}
+          className="w-fit bg-[#006701]/70 hover:opacity-70 border-[#fdc901] border text-white py-1 px-5 text-[.75rem] rounded-md cursor-pointer flex gap-2 items-center justify-center"
+        >
+          Sign
+        </button>
+      )}
 
       {signMod && (
         <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/60 p-4 flex justify-center items-center z-40">
@@ -59,14 +68,14 @@ const StaffDocSign = ({ item, docsFromFirestore }) => {
               <img
                 alt=""
                 src="/images/icons8-cancel-white-48.png"
-                className="w-7 h-7"
+                className="w-5 h-5"
               />
             </div>
             <h2 className="text-[1rem] lg:text-[1.5rem]">
               Sign {item?.submitted_by}'s {item?.name}?
             </h2>
             <button
-              // onClick={toggleMod}
+              onClick={() => handleSignDoc(item?.id)}
               className="w-fit bg-[#006701]/70 hover:opacity-70 border-[#fdc901] border text-white py-2 px-8 rounded-md cursor-pointer flex gap-2 items-center justify-center"
             >
               Sign
@@ -105,6 +114,26 @@ const StaffDocSign = ({ item, docsFromFirestore }) => {
               </div>
               {/* <FileDisplay filePath={item?.file} /> */}
             </div>
+          </div>
+        </div>
+      )}
+
+      {signSucess && (
+        <div className="w-full h-full fixed top-0 left-0 bg-[#006701]/60 p-4 flex justify-center items-center z-40">
+          <div className="w-full sm:w-[550px] h-[150px] flex flex-col gap-4 items-center bg-white rounded-lg border border-[#fdc901] p-5 relative scale">
+            <div
+              onClick={toggleMod}
+              className="absolute top-3 right-3 bg-[#006701]/80 rounded-full cursor-pointer"
+            >
+              <img
+                alt=""
+                src="/images/icons8-cancel-white-48.png"
+                className="w-5 h-5"
+              />
+            </div>
+            <h2 className="text-[1rem] lg:text-[1.5rem]">
+              Successfully signed {item?.submitted_by}'s {item?.name}?
+            </h2>
           </div>
         </div>
       )}
