@@ -52,7 +52,7 @@ const DocRaw = ({ item, user }) => {
               <img
                 alt=""
                 src="/images/icons8-cancel-white-48.png"
-                className="w-7 h-7"
+                className="w-5 h-5"
               />
             </div>
             {/* <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">{item}</h2> */}

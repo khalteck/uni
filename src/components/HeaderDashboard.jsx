@@ -60,7 +60,11 @@ const HeaderDashboard = () => {
             className="w-6 h-6 cursor-pointer"
           />
 
-          <h1 className="uppercase mr-auto">Student Dashboard</h1>
+          {userData?.student_data ? (
+            <h1 className="uppercase mr-auto">Student Dashboard</h1>
+          ) : (
+            <h1 className="uppercase mr-auto">Bursar Dashboard</h1>
+          )}
           <div className="relative">
             <img
               onClick={toggleStudent}
@@ -101,7 +105,11 @@ const HeaderDashboard = () => {
           className="w-6 h-6 cursor-pointer"
         />
         <div className="flex gap-3 items-center mx-auto">
-          <h1 className="uppercase">Student Dashboard</h1>
+          {userData?.student_data ? (
+            <h1 className="uppercase mr-auto">Student Dashboard</h1>
+          ) : (
+            <h1 className="uppercase mr-auto">Bursar Dashboard</h1>
+          )}
         </div>
         <div className="relative">
           <img
@@ -115,7 +123,7 @@ const HeaderDashboard = () => {
             className="w-7 h-7 cursor-pointer"
           />
           {openStudent && (
-            <div className="w-[200px] flex lg:gap-4 md:gap-3 items-center bg-[#006701] shadow absolute right-0 top-[60px] p-5 rounded-lg">
+            <div className="w-[200px] text-[.85rem] flex lg:gap-4 md:gap-3 items-center bg-[#006701] shadow absolute right-0 top-[60px] p-5 rounded-lg">
               {user ? (
                 <h1 className="uppercase">
                   {user?.first_name} {user?.last_name} <br /> [{" "}

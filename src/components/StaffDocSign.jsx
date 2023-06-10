@@ -28,7 +28,7 @@ const StaffDocSign = ({
     <div className="flex flex-col gap-2 items-start justify-start">
       <div
         onClick={toggleView}
-        className="min-w-[250px] bg-[#006701]/70 hover:border-[#fdc901] border-2 border-[#006701] p-3 flex flex-col justify-between rounded-lg text-white cursor-pointer"
+        className="min-w-full md:min-w-[250px] bg-[#006701]/70 hover:border-[#fdc901] border-2 border-[#006701] p-3 flex flex-col justify-between rounded-lg text-white cursor-pointer relative"
       >
         <div className="flex gap-3">
           <img
@@ -48,6 +48,11 @@ const StaffDocSign = ({
             </div>
           </div>
         </div>
+        {item?.signed && (
+          <p className="absolute bottom-1 right-1 text-[.75rem] font-bold">
+            SIGNED
+          </p>
+        )}
       </div>
       {!item?.signed && (
         <button
@@ -94,7 +99,7 @@ const StaffDocSign = ({
               <img
                 alt=""
                 src="/images/icons8-cancel-white-48.png"
-                className="w-7 h-7"
+                className="w-5 h-5"
               />
             </div>
             <h2 className="font-medium text-[1rem] lg:text-[1.5rem]">

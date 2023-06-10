@@ -51,7 +51,7 @@ const DocumentCard = ({ item, user }) => {
               <img
                 alt=""
                 src="/images/icons8-cancel-white-48.png"
-                className="w-7 h-7"
+                className="w-5 h-5"
               />
             </div>
             {!user && (

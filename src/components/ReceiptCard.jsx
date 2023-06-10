@@ -46,9 +46,11 @@ const ReceiptCard = () => {
         </p>
       </div>
       <div className="w-fit px-3 bg-white rounded-lg text-center py-5 border border-[#006701]/50">
-        <span className="font-bold text-[1.2rem]">
+        <span className="font-bold text-[1.1rem]">
           Total Paid -{" "}
-          <span className="font-bold text-[1.5rem]">NGN {receipt?.amount}</span>
+          <span className="font-bold md:text-[1.5rem] text-[1.25rem]">
+            NGN {receipt?.amount}
+          </span>
         </span>
       </div>
     </div>

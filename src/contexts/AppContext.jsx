@@ -133,7 +133,7 @@ const AppContextProvider = ({ children }) => {
       const data = await response?.json();
 
       if (response?.ok) {
-        console.log("Registration successful");
+        // console.log("Registration successful");
         localStorage.setItem("loginDetails", JSON.stringify(data));
         setRegisterSuccessData(await data);
         setRegisterSuccess(true);
@@ -142,7 +142,7 @@ const AppContextProvider = ({ children }) => {
           navigate("/login");
         }, 3000);
       } else {
-        console.log("Registration failed");
+        // console.log("Registration failed");
         setRegError(data?.message);
       }
     } catch (error) {
@@ -228,7 +228,7 @@ const AppContextProvider = ({ children }) => {
           const data = await response.json();
 
           if (response?.ok) {
-            console.log("docs data", data);
+            // console.log("docs data", data);
             setSubmittedDocs(data);
           } else {
             console.log("failed to get submitted docs");
@@ -303,7 +303,7 @@ const AppContextProvider = ({ children }) => {
           );
           const data = await response?.json();
           if (response?.ok) {
-            console.log("my biodata", data);
+            // console.log("my biodata", data);
             setstudentBio(await data?.biodata);
           }
         } catch (error) {
@@ -797,7 +797,6 @@ const AppContextProvider = ({ children }) => {
 
     const matric = userData?.student_data?.matric_no?.replace(/\//g, "-");
 
-    // update firestore
     await setDoc(doc(db, "receipts", `${matric}`), {
       ...newReceipt,
     });
@@ -816,7 +815,6 @@ const AppContextProvider = ({ children }) => {
   const submittedDocOwners = docsReceived.filter((obj2) =>
     studentsList.some((obj1) => obj1.matric_no === obj2.student_matric_no)
   );
-  // console.log("submittedDocOwners", submittedDocOwners);
 
   const [docsFromFirestore, setDocsFromFirestore] = useState([]);
 
@@ -924,14 +922,14 @@ const AppContextProvider = ({ children }) => {
         const data = await response.json();
 
         if (response.ok) {
-          console.log("Signed successfully", data);
+          // console.log("Signed successfully", data);
           setSignSucess(true);
           setTimeout(() => {
             setSignSucess(false);
             // window.location.reload();
           }, 3000);
         } else {
-          console.log("failed to sign doc", data);
+          // console.log("failed to sign doc", data);
 
           throw new Error("Server error.");
         }

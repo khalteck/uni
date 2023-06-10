@@ -128,6 +128,9 @@ const Register = () => {
                 onChange={handleInputChange}
                 placeholder="Contact"
               />
+              <label htmlFor="date_of_birth" className="mb-1">
+                Date of birth
+              </label>
               <input
                 className="w-full border-2 py-2 px-3 rounded-2xl mb-4 outline-none"
                 type="date"
